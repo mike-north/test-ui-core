@@ -1,3 +1,3 @@
-# test-ui-client
+# @test-ui/client
 
 A brand new TypeScript library.
