@@ -1,7 +1,7 @@
 {
   "name": "@test-ui/client",
   "version": "0.0.0-development",
-  "description": "A brand new TypeScript library.",
+  "description": "Run your QUnit or Mocha tests in an iframe",
   "main": "dist/commonjs/src/index.js",
   "module": "dist/modules/src/index.js",
   "types": "dist/types/src/index.d.ts",
