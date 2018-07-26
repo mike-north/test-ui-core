@@ -7,6 +7,6 @@ declare module '@test-ui/client' {
     qunit: QUnitAdapter;
   }
   export interface AdapterOptionsMap {
-    qunit: undefined;
+    qunit: null;
   }
 }

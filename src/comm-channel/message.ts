@@ -21,6 +21,6 @@ declare module '@test-ui/client' {
     postMessage: MessageCommChannel;
   }
   export interface CommChannelOptionsMap {
-    postMessage: undefined;
+    postMessage: null;
   }
 }
