@@ -16,13 +16,13 @@ export interface PresetCommChannelMap {
   qunitInBrowser: 'postMessage';
 }
 
-interface PresetFor<K extends PresetNames> {
+export interface PresetFor<K extends PresetNames> {
   testFramework: PresetTestFrameworksMap[K];
   commChannel: PresetCommChannelMap[K];
   runner: PresetRunnerMap[K];
 }
 
-interface PresetOptionsMap<K extends PresetNames> {
+export interface PresetOptionsMap<K extends PresetNames> {
   adapter: AdapterOptionsMap[PresetTestFrameworksMap[K]];
   commChannel: CommChannelOptionsMap[PresetCommChannelMap[K]];
   runner: TestRunnerConfigMap[PresetRunnerMap[K]];
