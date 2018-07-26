@@ -30,7 +30,7 @@ export interface PresetOptionsMap<K extends PresetNames> {
 
 export type PresetOptionsFor<K extends PresetNames> = ExcludePropertiesOfType<
   PresetOptionsMap<K>,
-  undefined | never
+  null
 >;
 
 export type Presets = PresetFor<PresetNames>;

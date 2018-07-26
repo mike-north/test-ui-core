@@ -7,6 +7,6 @@ declare module '@test-ui/client' {
     mocha: MochaAdapter;
   }
   export interface AdapterOptionsMap {
-    mocha: undefined;
+    mocha: null;
   }
 }
