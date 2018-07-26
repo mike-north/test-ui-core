@@ -1,7 +1,7 @@
 {
   "name": "@test-ui/client",
   "version": "0.0.0-development",
-  "description": "Run your QUnit or Mocha tests in an iframe",
+  "description": "Run your browser QUnit or Mocha tests in the background",
   "main": "dist/commonjs/src/index.js",
   "module": "dist/modules/src/index.js",
   "types": "dist/types/src/index.d.ts",
