@@ -1,4 +1,3 @@
-
 export type ExtractPropertyNamesOfType<T, S> = {
   [K in keyof T]: T[K] extends S ? K : never
 }[keyof T];
@@ -14,4 +13,9 @@ export type ExcludePropertiesOfType<T, S> = Pick<
   ExcludePropertyNamesOfType<T, S>
 >;
 
-export interface Data {}
+export interface TestEventData {
+  modulePath: string[];
+  name: string;
+}
+
+export type Data = TestEventData;
