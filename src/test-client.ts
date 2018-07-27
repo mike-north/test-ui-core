@@ -13,7 +13,7 @@ import {
   commChannelFactory as commChannel,
   testRunnerFactory as testRunner
 } from './test-client/factories';
-import { Data } from './types';
+import { DataPayload } from './types';
 
 class TestClient<K extends PresetNames> {
   protected adapter: AdapterMap[PresetTestFrameworksMap[K]];
@@ -29,7 +29,7 @@ class TestClient<K extends PresetNames> {
     this.runner = testRunner(preset.runner, (options as any).runner);
   }
 
-  subscribe(cb: (val: Data) => void): Subscription {
+  subscribe(cb: (val: DataPayload) => void): Subscription {
     return this.commChannel.subscribe(cb);
   }
 
