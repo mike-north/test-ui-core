@@ -62,6 +62,7 @@ interface ModuleInfo {
   fullName: string[];
   parent: ModuleInfo;
   tests: TestInfo[];
+  meta?: { [k: string]: any };
   count: {
     tests: {
       run: number;
@@ -87,6 +88,7 @@ function normalizeQunitModules(raw: any[]): ModuleInfo[] {
     name: rawModule.name,
     fullName: rawModule.suiteReport.fullName,
     parent: rawModule.parentModule,
+    meta: rawModule.meta,
     tests: zip(rawModule.tests, rawModule.suiteReport.tests).map(
       ([t, tr]: [any, any]) => {
         return {
