@@ -53,6 +53,7 @@ interface TestInfo {
   todo: boolean;
   valid: boolean;
   runtime: number;
+  meta: { [k: string]: any };
   assertions: AssertionInfo[];
 }
 
@@ -62,7 +63,7 @@ interface ModuleInfo {
   fullName: string[];
   parent: ModuleInfo;
   tests: TestInfo[];
-  meta?: { [k: string]: any };
+  meta: { [k: string]: any };
   count: {
     tests: {
       run: number;
@@ -88,7 +89,7 @@ function normalizeQunitModules(raw: any[]): ModuleInfo[] {
     name: rawModule.name,
     fullName: rawModule.suiteReport.fullName,
     parent: rawModule.parentModule,
-    meta: rawModule.meta,
+    meta: rawModule.meta || {},
     tests: zip(rawModule.tests, rawModule.suiteReport.tests).map(
       ([t, tr]: [any, any]) => {
         return {
@@ -98,6 +99,7 @@ function normalizeQunitModules(raw: any[]): ModuleInfo[] {
           skipped: tr.skpped,
           todo: tr.todo,
           valid: tr.valid,
+          meta: t.meta || {},
           runtime: tr.runtime,
           assertions: tr.assertions.map((a: any) => {
             const { message, passed, todo, stack } = a;
