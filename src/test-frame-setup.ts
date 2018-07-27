@@ -9,6 +9,8 @@ import {
   TestStartData
 } from './types';
 
+import { QUnitModuleDetails } from 'qunit-metadata';
+
 type QUnitCallbackFunctions = ExtractPropertiesOfType<
   QUnit,
   (cb: (arg: any) => any) => void
@@ -61,7 +63,7 @@ interface ModuleInfo {
   id: string;
   name: string;
   fullName: string[];
-  parent: ModuleInfo;
+  parent: string;
   tests: TestInfo[];
   meta: { [k: string]: any };
   count: {
@@ -83,14 +85,14 @@ function zip<A, B>(a: A[], b: B[]): Array<[A, B]> {
   );
 }
 
-function normalizeQunitModules(raw: any[]): ModuleInfo[] {
-  return raw.map((rawModule: any) => ({
-    id: rawModule.moduleId,
-    name: rawModule.name,
-    fullName: rawModule.suiteReport.fullName,
-    parent: rawModule.parentModule,
-    meta: rawModule.meta || {},
-    tests: zip(rawModule.tests, rawModule.suiteReport.tests).map(
+function transformQUnitModuleDetailsToModuleInfo(md: QUnitModuleDetails): ModuleInfo {
+  return {
+    id: md.moduleId,
+    name: md.name,
+    fullName: typeof md.suiteReport !== 'undefined' ? md.suiteReport.fullName : [],
+    parent: md.parentModule,
+    meta: md.meta || {},
+    tests: zip(md.tests, (md.suiteReport || {tests: []}).tests).map(
       ([t, tr]: [any, any]) => {
         return {
           id: t.id,
@@ -115,11 +117,15 @@ function normalizeQunitModules(raw: any[]): ModuleInfo[] {
     ),
     count: {
       tests: {
-        run: rawModule.testsRun,
-        unskippedRun: rawModule.unskippedTestsRun
+        run: md.testsRun || 0,
+        unskippedRun: md.unskippedTestsRun || 0
       }
     }
-  }));
+  };
+}
+
+function normalizeQunitModules(raw: QUnitModuleDetails[]): ModuleInfo[] {
+  return raw.map(transformQUnitModuleDetailsToModuleInfo);
 }
 
 function normalizeQunitCallbackData<K extends CallbackNames>(
