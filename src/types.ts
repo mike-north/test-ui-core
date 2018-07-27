@@ -54,10 +54,22 @@ export interface TestDoneData {
 
 export type Data =
   | BeginData
+  | DoneData
   | TestStartData
   | TestDoneData
   | ModuleDoneData
   | ModuleStartData;
+
+export interface DataForQUnitEventMap {
+  begin: BeginData;
+  done: DoneData;
+  testStart: TestStartData;
+  testDone: TestDoneData;
+  moduleStart: ModuleStartData;
+  moduleDone: ModuleDoneData;
+}
+
+export type DataForQUnitEvent<K extends keyof DataForQUnitEventMap> = DataForQUnitEventMap[K];
 
 export interface DataPayload<D extends Data = Data> {
   _testFrame: true;

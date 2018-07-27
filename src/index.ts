@@ -13,5 +13,18 @@ export interface CommChannelMap {}
 export interface CommChannelOptionsMap {}
 export interface TestRunnerMap {}
 export interface TestRunnerOptionsMap {}
-export { DataPayload } from './types';
+export {
+  DataPayload,
+  Data,
+  BeginData,
+  DoneData,
+  TestStartData,
+  TestDoneData,
+  ModuleDoneData,
+  ModuleStartData,
+  ModuleInfo,
+  TestInfo,
+  AssertionInfo,
+  DataForQUnitEvent
+} from './types';
 export { setupQUnitTestFrame } from './test-frame-setup';

@@ -19,7 +19,7 @@ type QUnitCallbackFunctions = ExtractPropertiesOfType<
   (cb: (arg: any) => any) => void
 >;
 
-type CallbackNames =
+export type CallbackNames =
   | 'begin'
   | 'done'
   | 'moduleStart'
