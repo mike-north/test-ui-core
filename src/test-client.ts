@@ -17,7 +17,7 @@ import { DataPayload } from './types';
 
 class TestClient<K extends PresetNames> {
   protected adapter: AdapterMap[PresetTestFrameworksMap[K]];
-  protected commChannel: CommChannel<any>;
+  protected commChannel: CommChannel<DataPayload>;
   protected runner: TestRunner<any>;
   constructor(presetName: K, options: PresetOptionsFor<K>) {
     const preset = PRESET_CONFIGS[presetName];

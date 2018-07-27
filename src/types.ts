@@ -59,10 +59,10 @@ export type Data =
   | ModuleDoneData
   | ModuleStartData;
 
-export interface DataPayload {
+export interface DataPayload<D extends Data = Data> {
   _testFrame: true;
   event: string;
-  data: Data;
+  data: D;
   state: ModuleInfo[];
 }
 

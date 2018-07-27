@@ -1,7 +1,7 @@
 import { Subject, Subscription } from 'micro-observable';
-import { Data } from './types';
+import { DataPayload } from './types';
 
-export default abstract class CommChannel<T extends Data> {
+export default abstract class CommChannel<T extends DataPayload> {
   protected subj = new Subject<T>();
   abstract async setup(): Promise<void>;
   abstract async destroy(): Promise<void>;
