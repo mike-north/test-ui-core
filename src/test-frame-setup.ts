@@ -1,15 +1,18 @@
 import {
   BeginData,
   Data,
+  DataPayload,
   DoneData,
   ExtractPropertiesOfType,
   ModuleDoneData,
+  ModuleInfo,
   ModuleStartData,
   TestDoneData,
   TestStartData
 } from './types';
 
 import { QUnitModuleDetails } from 'qunit-metadata';
+import './adapter/qunit';
 
 type QUnitCallbackFunctions = ExtractPropertiesOfType<
   QUnit,
@@ -41,39 +44,6 @@ const SERIALIZABLE_MODULE_INFO_PATCH = DISALLOWED_MODULE_PROPS.reduce(
   {} as any
 );
 
-interface AssertionInfo {
-  message: string;
-  passsed: boolean;
-  todo: boolean;
-  stack?: string;
-}
-
-interface TestInfo {
-  name: string;
-  fullName: string[];
-  skipped: boolean;
-  todo: boolean;
-  valid: boolean;
-  runtime: number;
-  meta: { [k: string]: any };
-  assertions: AssertionInfo[];
-}
-
-interface ModuleInfo {
-  id: string;
-  name: string;
-  fullName: string[];
-  parent: string;
-  tests: TestInfo[];
-  meta: { [k: string]: any };
-  count: {
-    tests: {
-      run: number;
-      unskippedRun: number;
-    };
-  };
-}
-
 function zip<A, B>(a: A[], b: B[]): Array<[A, B]> {
   return a.reduce(
     (acc, ai, idx) => {
@@ -85,14 +55,17 @@ function zip<A, B>(a: A[], b: B[]): Array<[A, B]> {
   );
 }
 
-function transformQUnitModuleDetailsToModuleInfo(md: QUnitModuleDetails): ModuleInfo {
+function transformQUnitModuleDetailsToModuleInfo(
+  md: QUnitModuleDetails
+): ModuleInfo {
   return {
     id: md.moduleId,
     name: md.name,
-    fullName: typeof md.suiteReport !== 'undefined' ? md.suiteReport.fullName : [],
+    fullName:
+      typeof md.suiteReport !== 'undefined' ? md.suiteReport.fullName : [],
     parent: md.parentModule,
     meta: md.meta || {},
-    tests: zip(md.tests, (md.suiteReport || {tests: []}).tests).map(
+    tests: zip(md.tests, (md.suiteReport || { tests: [] }).tests).map(
       ([t, tr]: [any, any]) => {
         return {
           id: t.id,
@@ -212,16 +185,14 @@ function qUnitMessageParent<K extends CallbackNames>(
   event: K,
   data: QUnitCallbackArg<K>
 ) {
+  const payload: DataPayload = {
+    _testFrame: true,
+    event,
+    data: normalizeQunitCallbackData(event, data),
+    state: normalizeQunitModules(getQUnitSerializableModuleInfo())
+  };
   if (window && window.parent) {
-    window.parent.postMessage(
-      {
-        _testFrame: true,
-        event,
-        data: normalizeQunitCallbackData(event, data),
-        state: normalizeQunitModules(getQUnitSerializableModuleInfo())
-      },
-      '*'
-    );
+    window.parent.postMessage(payload, '*');
   }
 }
 

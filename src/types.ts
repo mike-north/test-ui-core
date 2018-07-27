@@ -16,10 +16,11 @@ export type ExcludePropertiesOfType<T, S> = Pick<
 export interface BeginData {
   counts: {
     total: {
-      tests: number
+      tests: number;
     };
   };
 }
+
 export interface DoneData {
   counts: {
     total: {
@@ -29,14 +30,17 @@ export interface DoneData {
     };
   };
 }
+
 export interface ModuleStartData {
   name: string;
-  tests: Array<{name: string; id: string; skip: boolean}>;
+  tests: Array<{ name: string; id: string; skip: boolean }>;
 }
+
 export interface ModuleDoneData {
   name: string;
-  tests: Array<{name: string; id: string; skip: boolean}>;
+  tests: Array<{ name: string; id: string; skip: boolean }>;
 }
+
 export interface TestStartData {
   moduleName: string;
   name: string;
@@ -48,4 +52,49 @@ export interface TestDoneData {
   id: string;
 }
 
-export type Data = BeginData | TestStartData | TestDoneData | ModuleDoneData | ModuleStartData;
+export type Data =
+  | BeginData
+  | TestStartData
+  | TestDoneData
+  | ModuleDoneData
+  | ModuleStartData;
+
+export interface DataPayload {
+  _testFrame: true;
+  event: string;
+  data: Data;
+  state: ModuleInfo[];
+}
+
+export interface AssertionInfo {
+  message: string;
+  passsed: boolean;
+  todo: boolean;
+  stack?: string;
+}
+
+export interface TestInfo {
+  name: string;
+  fullName: string[];
+  skipped: boolean;
+  todo: boolean;
+  valid: boolean;
+  runtime: number;
+  meta: { [k: string]: any };
+  assertions: AssertionInfo[];
+}
+
+export interface ModuleInfo {
+  id: string;
+  name: string;
+  fullName: string[];
+  parent: string;
+  tests: TestInfo[];
+  meta: { [k: string]: any };
+  count: {
+    tests: {
+      run: number;
+      unskippedRun: number;
+    };
+  };
+}

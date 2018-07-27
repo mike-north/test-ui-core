@@ -15,17 +15,7 @@ import {
 } from './test-client/factories';
 import { Data } from './types';
 
-export interface Arg<
-  A extends keyof AdapterMap,
-  C extends keyof CommChannelMap,
-  TR extends keyof TestRunnerMap
-> {
-  testFramework: A;
-  commChannel: C;
-  runner: TR;
-}
-
-export default class TestClient<K extends PresetNames> {
+class TestClient<K extends PresetNames> {
   protected adapter: AdapterMap[PresetTestFrameworksMap[K]];
   protected commChannel: CommChannel<any>;
   protected runner: TestRunner<any>;
@@ -50,3 +40,18 @@ export default class TestClient<K extends PresetNames> {
     await this.adapter.destroy();
   }
 }
+
+// tslint:disable-next-line:no-namespace
+namespace TestClient {
+  export interface Arg<
+    A extends keyof AdapterMap,
+    C extends keyof CommChannelMap,
+    TR extends keyof TestRunnerMap
+  > {
+    testFramework: A;
+    commChannel: C;
+    runner: TR;
+  }
+}
+
+export default TestClient;
