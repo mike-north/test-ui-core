@@ -75,7 +75,9 @@ export interface DataPayload<D extends Data = Data> {
   _testFrame: true;
   event: string;
   data: D;
-  state: ModuleInfo[];
+  state: {
+    modules: ModuleInfo[]
+  };
 }
 
 export interface AssertionInfo {

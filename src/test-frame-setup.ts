@@ -189,7 +189,9 @@ function qUnitMessageParent<K extends CallbackNames>(
     _testFrame: true,
     event,
     data: normalizeQunitCallbackData(event, data),
-    state: normalizeQunitModules(getQUnitSerializableModuleInfo())
+    state: {
+      modules: normalizeQunitModules(getQUnitSerializableModuleInfo())
+    }
   };
   if (window && window.parent) {
     window.parent.postMessage(payload, '*');
