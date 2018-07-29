@@ -26,8 +26,10 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/qunit": "^2.5.1",
     "ember-cli": "^3.1.4",
     "libkit": "^0.6.0",
+    "qunit": "^2.6.1",
     "semantic-release": "^15.8.1",
     "shelljs": "^0.7.8",
     "travis-deploy-once": "^5.0.1",

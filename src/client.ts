@@ -4,7 +4,7 @@ import { TestServerMethods } from './server';
 
 const PROMISE_UNDEFINED = Promise.resolve(undefined);
 
-class TestClientMethodsArg {
+export class TestClientMethodsArg {
   serverReady?: () => void;
 }
 export interface TestClientMethods {
@@ -18,9 +18,9 @@ const testClientMethods = (args: TestClientMethodsArg): TestClientMethods => ({
 })
 
 export default class TestClient {
-  private connection?: Penpal.IChildConnectionObject
+  private connection?: Penpal.IChildConnectionObject;
   constructor(frameContainer: HTMLIFrameElement, arg: TestClientMethodsArg = {}) {
-    if (isTesting) return; 
+    if (isTesting) return;
     this.connection = Penpal.connectToChild({
       url: '/tests',
       appendTo: frameContainer,

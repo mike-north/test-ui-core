@@ -1,28 +1,56 @@
 import Penpal from 'penpal';
-import { TestClientMethods } from './client';
-
-interface TestServerMethodsArg {
-  startTests(): void;
-}
+// import { TestClientMethods } from './client';
 
 export interface TestServerMethods {
   startTests(): void;
 }
 
-const testServerMethods = (args: TestServerMethodsArg): TestServerMethods => ({
-  startTests() {
-    return args.startTests();
-  }
-});
+// const testServerMethods = (args: TestServerMethodsArg): TestServerMethods => ({
+//   startTests() {
+//     return args.startTests();
+//   }
+// });
 
-export default abstract class TestServer {
+export type FunctionArgs<F> = F extends (a: infer A) => any ? [A]
+  : F extends (a: infer A, b: infer B) => any ? [A, B]
+  : F extends (a: infer A, b: infer B, c: infer C) => any ? [A, B, C]
+  : F extends (a: infer A, b: infer B, c: infer C, d: infer D) => any ? [A, B, C, D]
+  : F extends (a: infer A, b: infer B, c: infer C, d: infer D, e: infer E) => any ? [A, B, C, D, E]
+  : never;
+
+export type ConstructorArgs<K extends { new(...args: any[]): any }>
+  =   K extends { new(a: infer A): any } ? [A]
+    : K extends { new(a: infer A, b: infer B): any } ? [A, B]
+    : K extends { new(a: infer A, b: infer B, c: infer C): any } ? [A, B, C]
+    : K extends { new(a: infer A, b: infer B, c: infer C, d: infer D): any } ? [A, B, C, D]
+    : K extends { new(a: infer A, b: infer B, c: infer C, d: infer D, e: infer E): any } ? [A, B, C, D, E]
+    : never;
+
+export interface Deferred {
+  resolve: FunctionArgs<ConstructorArgs<PromiseConstructor>[0]>[0];
+  reject: FunctionArgs<ConstructorArgs<PromiseConstructor>[0]>[1];
+}
+
+export default abstract class TestServer<
+  SM extends TestServerMethods = TestServerMethods> {
+  ready!: Promise<any>;
+  protected methods!: SM;
+  protected readyDeferred!: Deferred;
   private connection!: Penpal.IConnectionObject;
-  constructor(args: TestServerMethodsArg) {
-    this.connection = Penpal.connectToParent({
-      methods: testServerMethods(args)
+  constructor() {
+    this.init();
+    this.ready = new Promise<{}>((resolve, reject) => {
+      this.readyDeferred = {
+        resolve, reject
+      };
     });
   }
-  get ready(): Promise<TestClientMethods> {
-    return this.connection.promise;
+  protected async init(): Promise<void> {
+    const methods = await this.setupMethods();
+    this.connection = Penpal.connectToParent({
+      methods
+    });
+    await this.connection;
   }
+  protected abstract async setupMethods(): Promise<SM>;
 }
