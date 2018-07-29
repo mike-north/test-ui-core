@@ -45,8 +45,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/mike-north/test-ui-client.git"
-  },
-  "optionalDependencies": {
-    "qunit": "^2.0.0"
   }
 }

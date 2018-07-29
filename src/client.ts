@@ -1,6 +1,6 @@
 import Penpal from 'penpal';
 import isTesting from './is-testing';
-import { TestServerMethods } from './test-server';
+import { TestServerMethods } from './server';
 
 const PROMISE_UNDEFINED = Promise.resolve(undefined);
 

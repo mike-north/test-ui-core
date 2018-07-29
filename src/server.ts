@@ -1,5 +1,5 @@
 import Penpal from 'penpal';
-import { TestClientMethods } from './test-client';
+import { TestClientMethods } from './client';
 
 interface TestServerMethodsArg {
   startTests(): void;
@@ -15,7 +15,7 @@ const testServerMethods = (args: TestServerMethodsArg): TestServerMethods => ({
   }
 });
 
-export default class TestServer {
+export default abstract class TestServer {
   private connection!: Penpal.IConnectionObject;
   constructor(args: TestServerMethodsArg) {
     this.connection = Penpal.connectToParent({
