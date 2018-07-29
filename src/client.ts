@@ -20,7 +20,13 @@ const testClientMethods = (args: TestClientMethodsArg): TestClientMethods => ({
 export default class TestClient {
   private connection?: Penpal.IChildConnectionObject;
   constructor(frameContainer: HTMLIFrameElement, arg: TestClientMethodsArg = {}) {
-    if (isTesting) return;
+    console.log('entered test client constructor');
+    if (isTesting) {
+      console.log('test environment detected');
+      return;
+    } else {
+      console.log('test environment NOT detected');
+    }
     this.connection = Penpal.connectToChild({
       url: '/tests',
       appendTo: frameContainer,

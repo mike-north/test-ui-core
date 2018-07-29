@@ -38,14 +38,17 @@ export default abstract class TestServer<
   protected readyDeferred!: Deferred;
   private connection!: Penpal.IConnectionObject;
   constructor() {
-    this.init();
     this.ready = new Promise<{}>((resolve, reject) => {
       this.readyDeferred = {
         resolve, reject
       };
+    }).then(() => {
+      console.log('ready deferred has resolved!');
     });
+    this.init();
   }
   protected async init(): Promise<void> {
+    console.log('init! setting up methods');
     const methods = await this.setupMethods();
     this.connection = Penpal.connectToParent({
       methods
