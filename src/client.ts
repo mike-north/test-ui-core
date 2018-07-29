@@ -17,7 +17,7 @@ const testClientMethods = (args: TestClientMethodsArg): TestClientMethods => ({
   }
 });
 
-export default class TestClient {
+export default class TestClient<SM extends TestServerMethods = TestServerMethods> {
   private connection?: Penpal.IChildConnectionObject;
   private setupPromise: Promise<any>;
   constructor(frameContainer: HTMLIFrameElement, arg: TestClientMethodsArg = {}) {
@@ -41,7 +41,7 @@ export default class TestClient {
     if (!conn) return;
     resolve(await conn.promise);
   }
-  get ready(): Promise<TestServerMethods | undefined> {
+  get ready(): Promise<SM | undefined> {
     return this.connection ? this.setupPromise : PROMISE_UNDEFINED;
     // return this.connection ? this.connection.promise : PROMISE_UNDEFINED;
   }
