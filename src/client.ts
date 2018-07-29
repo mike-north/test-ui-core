@@ -15,7 +15,7 @@ const testClientMethods = (args: TestClientMethodsArg): TestClientMethods => ({
   onServerReady() {
     if (args.serverReady) args.serverReady();
   }
-})
+});
 
 export default class TestClient {
   private connection?: Penpal.IChildConnectionObject;
