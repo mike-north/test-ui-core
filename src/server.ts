@@ -46,11 +46,9 @@ export default abstract class TestServer<
     }).then(() => {
       return this.connection.promise;
     });
-    console.log('waiting...');
-    setTimeout(() => {
-      console.log('done waiting!');
-      this.init();
-    }, 3000);
+    this.init();
+    // setTimeout(() => {
+    // }, 0);
   }
   protected async init(): Promise<void> {
     const methods = await this.setupMethods();
