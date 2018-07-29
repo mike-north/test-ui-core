@@ -1,8 +1,8 @@
+import { TestClientMethods } from '@test-ui/core/client';
 import Penpal from 'penpal';
-// import { TestClientMethods } from './client';
 
 export interface TestServerMethods {
-  startTests(): void;
+  startTests(...args: any[]): any;
 }
 
 // const testServerMethods = (args: TestServerMethodsArg): TestServerMethods => ({
@@ -32,10 +32,11 @@ export interface Deferred {
 }
 
 export default abstract class TestServer<
-  SM extends TestServerMethods = TestServerMethods> {
-  ready!: Promise<any>;
+  SM extends TestServerMethods = TestServerMethods,
+  CM extends TestClientMethods = TestClientMethods> {
+  ready!: Promise<CM>;
   protected methods!: SM;
-  protected readyDeferred!: Deferred;
+  private readyDeferred!: Deferred;
   private connection!: Penpal.IConnectionObject;
   constructor() {
     this.ready = new Promise<{}>((resolve, reject) => {
@@ -43,17 +44,22 @@ export default abstract class TestServer<
         resolve, reject
       };
     }).then(() => {
-      console.log('ready deferred has resolved!');
+      return this.connection.promise;
     });
-    this.init();
+    setTimeout(() => {
+      this.init();
+    }, 0);
   }
   protected async init(): Promise<void> {
-    console.log('init! setting up methods');
     const methods = await this.setupMethods();
     this.connection = Penpal.connectToParent({
       methods
     });
-    await this.connection;
+    await this.indicateSetupComplete();
+    (await this.ready).onServerReady();
   }
   protected abstract async setupMethods(): Promise<SM>;
+  private async indicateSetupComplete() {
+    this.readyDeferred.resolve();
+  }
 }

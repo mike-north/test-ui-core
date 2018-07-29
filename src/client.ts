@@ -19,21 +19,30 @@ const testClientMethods = (args: TestClientMethodsArg): TestClientMethods => ({
 
 export default class TestClient {
   private connection?: Penpal.IChildConnectionObject;
+  private setupPromise: Promise<any>;
   constructor(frameContainer: HTMLIFrameElement, arg: TestClientMethodsArg = {}) {
-    console.log('entered test client constructor');
+    let resolve: any;
+    this.setupPromise = new Promise(r => {
+      resolve = r;
+    });
     if (isTesting()) {
-      console.log('test environment detected');
       return;
     } else {
-      console.log('test environment NOT detected');
+      this.connection = Penpal.connectToChild({
+        url: '/tests',
+        appendTo: frameContainer,
+        methods: testClientMethods(arg)
+      });
+      this.init(resolve);
     }
-    this.connection = Penpal.connectToChild({
-      url: '/tests',
-      appendTo: frameContainer,
-      methods: testClientMethods(arg)
-    });
+  }
+  private async init(resolve: any) {
+    const conn = this.connection;
+    if (!conn) return;
+    resolve(await conn.promise);
   }
   get ready(): Promise<TestServerMethods | undefined> {
-    return this.connection ? this.connection.promise : PROMISE_UNDEFINED;
+    return this.connection ? this.setupPromise : PROMISE_UNDEFINED;
+    // return this.connection ? this.connection.promise : PROMISE_UNDEFINED;
   }
 }
