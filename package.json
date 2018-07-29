@@ -1,7 +1,7 @@
 {
-  "name": "@test-ui/client",
+  "name": "@test-ui/core",
   "version": "0.0.0-development",
-  "description": "Run your browser QUnit or Mocha tests in the background",
+  "description": "Get in-app feedback from tests while developing",
   "main": "dist/commonjs/src/index.js",
   "module": "dist/modules/src/index.js",
   "types": "dist/types/src/index.d.ts",
@@ -29,7 +29,6 @@
     "@types/qunit": "^2.0.31",
     "ember-cli": "^3.1.4",
     "libkit": "^0.6.0",
-    "qunit": "^2.4.1",
     "qunit-metadata": "^1.2.3",
     "semantic-release": "^15.8.1",
     "shelljs": "^0.7.8",
@@ -38,7 +37,8 @@
     "typescript": "^2.9.2"
   },
   "dependencies": {
-    "micro-observable": "^1.1.2"
+    "micro-observable": "^1.1.2",
+    "penpal": "^3.0.3"
   },
   "plublishConfig": {
     "access": "public",
@@ -47,5 +47,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/mike-north/test-ui-client.git"
+  },
+  "optionalDependencies": {
+    "qunit": "^2.0.0"
   }
 }

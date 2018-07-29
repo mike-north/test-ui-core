@@ -1,4 +1,4 @@
-# @test-ui/client
+# @test-ui/core
 
-[![Build Status](https://travis-ci.org/mike-north/test-ui-client.svg?branch=master)](https://travis-ci.org/mike-north/test-ui-client)
-[![Version](https://img.shields.io/npm/v/@test-ui/client.svg)](https://www.npmjs.com/package/@test-ui/client)
+[![Build Status](https://travis-ci.org/mike-north/test-ui-core.svg?branch=master)](https://travis-ci.org/mike-north/test-ui-core)
+[![Version](https://img.shields.io/npm/v/@test-ui/core.svg)](https://www.npmjs.com/package/@test-ui/core)

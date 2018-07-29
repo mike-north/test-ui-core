@@ -1,6 +1,6 @@
-import { TestClient, setupQUnitTestFrame } from '@test-ui/client';
+import { TestClient, setupQUnitTestFrame } from '@test-ui/core';
 
-QUnit.module('test-ui-client tests');
+QUnit.module('@test-ui/core tests');
 
 QUnit.test('hello', assert => {
   assert.ok(TestClient, 'TestClient exists');

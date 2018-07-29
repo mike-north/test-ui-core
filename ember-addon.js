@@ -3,7 +3,7 @@
 const path = require('path');
 
 module.exports = {
-  name: '@test-ui/client',
+  name: '@test-ui/core',
 
   setupPreprocessorRegistry(type, registry) {
     if (type === 'self') {
