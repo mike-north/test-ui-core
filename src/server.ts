@@ -1,4 +1,4 @@
-import { TestClientMethods } from '@test-ui/core/client';
+import { TestClientMethods } from '@test-ui/core';
 import Penpal from 'penpal';
 
 export interface TestServerMethods {
