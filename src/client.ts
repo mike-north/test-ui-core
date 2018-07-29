@@ -21,7 +21,7 @@ export default class TestClient {
   private connection?: Penpal.IChildConnectionObject;
   constructor(frameContainer: HTMLIFrameElement, arg: TestClientMethodsArg = {}) {
     console.log('entered test client constructor');
-    if (isTesting) {
+    if (isTesting()) {
       console.log('test environment detected');
       return;
     } else {

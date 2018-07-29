@@ -19,6 +19,7 @@
         "named-imports-order": "lowercase-last"
       }
     ],
+    "strict-boolean-expressions": [true, "allow-boolean-or-undefined"],
     "no-console": false,
     "prefer-const": false,
     "quotemark": [true, "single"],
