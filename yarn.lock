@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@mike-north/types@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@mike-north/types/-/types-1.0.3.tgz#7c1455dcd4df62c4a7548b5fb576928b8814fba6"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -3817,6 +3821,10 @@ json-stable-stringify@^1.0.0, json-stable-stringify@^1.0.1:
 json-stringify-safe@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
+
+json-typescript@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/json-typescript/-/json-typescript-1.0.1.tgz#9d71a17627a20a61dbbf504e33561030f4eefd7f"
 
 json5@^0.5.0, json5@^0.5.1:
   version "0.5.1"

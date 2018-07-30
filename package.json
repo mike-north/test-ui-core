@@ -1,6 +1,6 @@
 {
   "name": "@test-ui/core",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Get in-app feedback from tests while developing",
   "main": "dist/commonjs/src/index.js",
   "module": "dist/modules/src/index.js",
@@ -37,6 +37,8 @@
     "typescript": "^2.9.2"
   },
   "dependencies": {
+    "@mike-north/types": "^1.0.3",
+    "json-typescript": "^1.0.1",
     "micro-observable": "^1.1.2",
     "penpal": "^3.0.3"
   },
