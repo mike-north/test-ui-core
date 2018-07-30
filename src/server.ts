@@ -82,11 +82,16 @@ export default abstract class TestServer<
         reject
       };
     });
+    console.log('readyDeferred resolved!');
     await this.beforeReady();
+    console.log('beforeReady complete!');
     const client: CM = await this.connection.promise;
+    console.log('client connection established!');
     await new Promise(res => {
       setTimeout(async () => {
+        console.log('about to init!');
         await this.init();
+        console.log('init complete!');
         res();
       });
     });
