@@ -1,43 +1,82 @@
 import { AsyncMethodReturns } from '@mike-north/types';
+import { Subject } from 'micro-observable';
 import Penpal from 'penpal';
-import isTesting from './is-testing';
-import { TestServerMethods } from './server';
+import { inAppEnvironment } from './client/utils';
+import TestServer from './server';
+import TaggedLogger, { Level } from './tagged-logger';
 
-const PROMISE_UNDEFINED = Promise.resolve(undefined);
-
-export class TestClientMethodsArg {
-  serverReady?: () => void;
-}
-
-export interface TestClientMethods {
-  onServerReady(): void;
-}
-
-const testClientMethods = (args: TestClientMethodsArg): TestClientMethods => ({
-  onServerReady() {
-    if (args.serverReady) args.serverReady();
+// tslint:disable-next-line:no-namespace
+namespace TestClient {
+  export interface Methods {
+    receiveTestData(data: any): void;
   }
-});
+  export interface Options {
+    frame: HTMLIFrameElement;
+  }
+}
 
-export default class TestClient<SM extends TestServerMethods = TestServerMethods> {
-  private connection?: Penpal.IChildConnectionObject;
-  constructor(frameContainer: HTMLIFrameElement, arg: TestClientMethodsArg = {}) {
-    if (isTesting()) {
-      return;
+export class Deferred<T> {
+  resolve!: (value?: T | PromiseLike<T>) => void;
+  reject!: (reason?: any) => void;
+  promise!: Promise<T>;
+  constructor() {
+    this.promise = new Promise<T>((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+    });
+  }
+}
+
+abstract class TestClient<
+SM extends TestServer.Methods = TestServer.Methods
+> {
+  get ready() {
+    return this.connDeferred.promise;
+  }
+  testDataSubject = new Subject<any>();
+  protected frame: HTMLIFrameElement;
+  protected connection!: Penpal.IChildConnectionObject;
+  protected connDeferred: Deferred<any>;
+  protected debug = false;
+  protected log: TaggedLogger = new TaggedLogger(this.debug ? Level.Debug : Level.Warn);
+  protected cleanupTasks: Array<() => void> = [];
+  protected waiters: Array<Promise<any>> = [];
+  constructor(opts: TestClient.Options) {
+    this.log.pushTag('💻 TestClient');
+    this.frame = opts.frame;
+    this.connDeferred = new Deferred<AsyncMethodReturns<SM>>();
+    if (inAppEnvironment()) {
+        setTimeout(() => {
+          this.connection = Penpal.connectToChild({
+            url: this.getFrameUrl(),
+            appendTo: this.frame,
+            methods: this.buildMethods()
+          });
+          this.connection.promise.then(val => {
+            return Promise.all(this.waiters).then(() => val);
+          })
+          .then(val => {
+            this.connDeferred.resolve(val);
+          });
+        }, 0);
     } else {
-      this.connection = Penpal.connectToChild({
-        url: '/tests',
-        appendTo: frameContainer,
-        methods: testClientMethods(arg)
-      });
-      this.init();
+      this.connDeferred.reject('Cannot run inside test environment');
     }
   }
-  get ready(): Promise<AsyncMethodReturns<SM>> {
-    return this.connection ? this.connection.promise : PROMISE_UNDEFINED;
+  destroy() {
+    this.testDataSubject.complete();
+    this.connection.destroy();
+    this.cleanupTasks.forEach(f => f());
   }
-  private async init() {
-    const conn = this.connection;
-    if (!conn) return;
+  protected buildMethods(): TestClient.Methods {
+    const client = this;
+    return {
+      receiveTestData(data: any) {
+        client.testDataSubject.next(data);
+      }
+    };
   }
+  protected abstract getFrameUrl(): string;
 }
+
+export default TestClient;

@@ -1,70 +1,45 @@
-import { AsyncMethodReturns, Deferred } from '@mike-north/types';
-import { TestClientMethods } from '@test-ui/core';
-import { Value as JSONValue } from 'json-typescript';
+import { AsyncMethodReturns } from '@mike-north/types';
 import Penpal from 'penpal';
-export interface TestServerMethods {
-  startTests(...args: any[]): any;
+import TestClient from './client';
+import TaggedLogger, { Level } from './tagged-logger';
+
+// tslint:disable-next-line:no-namespace
+namespace TestServer {
+  export interface Methods {}
+  export interface Options {}
 }
 
-export default abstract class TestServer<
-  SM extends TestServerMethods = TestServerMethods,
-  CM extends TestClientMethods = TestClientMethods
-> {
-  ready!: Promise<AsyncMethodReturns<CM>>;
-  protected methods!: SM;
-  protected debug: boolean = false;
-  private readyDeferred!: Deferred;
-  private connection!: Penpal.IConnectionObject;
-  constructor() {
-    // kick off ready promise
-    this.log('instantiating server');
-    this.becomeReady();
-  }
-  protected log(message: string, ...args: JSONValue[]) {
-    if (this.debug) {
-      console.log(`[${this.constructor.name}]: ${message}`, ...args);
-    }
-  }
-  protected async beforeReady(): Promise<void> {
-    return Promise.resolve();
-  }
-
-  protected async init(): Promise<void> {
-    const methods = await this.setupMethods();
-    this.connection = Penpal.connectToParent({
-      methods
-    });
-    await this.readyDeferred.resolve();
-  }
-  protected abstract async setupMethods(): Promise<SM>;
-  private async becomeReady(): Promise<CM> {
-    this.log('about to becomeReady!');
-    this.ready = new Promise<{}>((resolve, reject) => {
-      this.readyDeferred = {
-        resolve,
-        reject
-      };
-    }).then(() => {
-      return this.connection.promise;
-    });
-    const initPromise = new Promise(res => {
-      setTimeout(async () => {
-        this.log('about to init!');
-        await this.init();
-        this.log('init complete!');
-        res();
+class TestServer<CM extends TestClient.Methods = TestClient.Methods> {
+  protected connection!: Penpal.IConnectionObject;
+  protected connectionReady!: Promise<AsyncMethodReturns<CM>>;
+  protected debug = false;
+  protected log: TaggedLogger = new TaggedLogger(
+    this.debug ? Level.Debug : Level.Warn
+  );
+  constructor(protected opts: TestServer.Options) {
+    this.log.pushTag('🎯 TestServer');
+    this.connectionReady = new Promise(res => {
+      setTimeout(() => {
+        res(this.becomeReady());
       }, 0);
     });
-    this.log('waiting for init!');
-    await initPromise;
-    this.log('waiting for readyDeferred!');
-    const r: AsyncMethodReturns<TestClientMethods> = (await this.ready) as any;
-    r.onServerReady();
-    this.log('onServerReady complete!');
-    await this.beforeReady();
-    this.log('beforeReady complete!');
-    const client: CM = await this.connection.promise;
-    this.log('client connection established!');
-    return client;
+  }
+  destroy() {
+    this.connection.destroy();
+  }
+  protected buildMethods(): TestServer.Methods {
+    return {};
+  }
+  protected async becomeReady(): Promise<AsyncMethodReturns<CM>> {
+    await this.establishConnection();
+    return this.connection.promise as Promise<AsyncMethodReturns<CM>>;
+  }
+  private async establishConnection() {
+    this.log.debug('Establishing connection');
+    this.connection = Penpal.connectToParent({
+      methods: this.buildMethods()
+    });
   }
 }
+
+export default TestServer;
