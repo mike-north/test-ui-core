@@ -10,7 +10,7 @@ namespace TestServer {
 }
 
 class TestServer<CM extends TestClient.Methods = TestClient.Methods> {
-  protected connection!: Penpal.IConnectionObject;
+  protected connection!: ReturnType<typeof Penpal.connectToParent>;
   protected connectionReady!: Promise<AsyncMethodReturns<CM>>;
   protected debug = false;
   protected log: TaggedLogger = new TaggedLogger(

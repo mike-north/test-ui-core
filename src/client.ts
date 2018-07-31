@@ -35,7 +35,7 @@ SM extends TestServer.Methods = TestServer.Methods
   }
   testDataSubject = new Subject<any>();
   protected frame: HTMLIFrameElement;
-  protected connection!: Penpal.IChildConnectionObject;
+  protected connection!: ReturnType<typeof Penpal.connectToChild>;
   protected connDeferred: Deferred<any>;
   protected debug = false;
   protected log: TaggedLogger = new TaggedLogger(this.debug ? Level.Debug : Level.Warn);
