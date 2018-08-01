@@ -33,12 +33,12 @@ SM extends TestServer.Methods = TestServer.Methods
   get ready() {
     return this.connDeferred.promise;
   }
+  static debug = false;
   testDataSubject = new Subject<any>();
   protected frame: HTMLIFrameElement;
   protected connection!: ReturnType<typeof Penpal.connectToChild>;
   protected connDeferred: Deferred<any>;
-  protected debug = false;
-  protected log: TaggedLogger = new TaggedLogger(this.debug ? Level.Debug : Level.Warn);
+  protected log: TaggedLogger = new TaggedLogger(TestClient.debug ? Level.Debug : Level.Warn);
   protected cleanupTasks: Array<() => void> = [];
   protected waiters: Array<Promise<any>> = [];
   constructor(opts: TestClient.Options) {

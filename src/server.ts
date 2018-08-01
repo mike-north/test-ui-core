@@ -10,11 +10,11 @@ namespace TestServer {
 }
 
 class TestServer<CM extends TestClient.Methods = TestClient.Methods> {
+  static debug = false;
   protected connection!: ReturnType<typeof Penpal.connectToParent>;
   protected connectionReady!: Promise<AsyncMethodReturns<CM>>;
-  protected debug = false;
   protected log: TaggedLogger = new TaggedLogger(
-    this.debug ? Level.Debug : Level.Warn
+    TestServer.debug ? Level.Debug : Level.Warn
   );
   constructor(protected opts: TestServer.Options) {
     this.log.pushTag('🎯 TestServer');
