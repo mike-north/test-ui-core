@@ -26,21 +26,27 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/qunit": "^2.5.1",
+    "@types/qunit": "^2.5.2",
+    "@types/sinon": "^5.0.1",
     "ember-cli": "^3.1.4",
     "libkit": "^0.6.0",
     "qunit": "^2.6.1",
+    "qunit-decorators": "^1.1.1",
     "semantic-release": "^15.8.1",
     "shelljs": "^0.7.8",
+    "sinon": "^6.1.4",
     "travis-deploy-once": "^5.0.1",
     "tslint": "^5.7.0",
-    "typescript": "^2.9.2"
+    "typescript": "^3.1.0-dev.20180804"
   },
   "dependencies": {
-    "@mike-north/types": "^1.0.3",
+    "@mike-north/types": "^1.0.0",
+    "bite-log": "^1.0.0",
     "json-typescript": "^1.0.1",
-    "micro-observable": "^1.1.2",
-    "penpal": "^3.0.3"
+    "micro-observable": "^1.1.4",
+    "object-predicate": "^1.0.1",
+    "penpal": "^3.0.3",
+    "youarei": "^1.0.3"
   },
   "plublishConfig": {
     "access": "public",
