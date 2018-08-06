@@ -3,6 +3,8 @@ import * as Core from '../src';
 import TestClient from '../src/base-client';
 import BaseObject from '../src/base-object';
 import TestServer from '../src/base-server';
+import ConnectionClient from '../src/connection/base-client';
+import ConnectionServer from '../src/connection/base-server';
 import IFrameConnectionClient from '../src/connection/iframe-client';
 import IFrameConnectionServer from '../src/connection/iframe-server';
 
@@ -35,6 +37,14 @@ export class ExportsTest {
   @test
   'BaseObject export is correct'(assert: Assert) {
     assert.deepEqual(Core.BaseObject, BaseObject, 'has the correct value');
+  }
+  @test
+  'ConnectionClient export is correct'(assert: Assert) {
+    assert.deepEqual(Core.ConnectionClient, ConnectionClient, 'has the correct value');
+  }
+  @test
+  'ConnectionServer export is correct'(assert: Assert) {
+    assert.deepEqual(Core.ConnectionServer, ConnectionServer, 'has the correct value');
   }
   @test
   'IFrameConnectionClient export is correct'(assert: Assert) {
