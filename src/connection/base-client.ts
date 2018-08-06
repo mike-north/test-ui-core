@@ -17,10 +17,10 @@ import ServerConnection from './base-server';
 // tslint:disable-next-line:no-namespace
 namespace ClientConnection {
   export interface Options extends BaseObject.Options {}
-  export interface Methods<DAT extends AnyTestDataEvent = AnyTestDataEvent> {
+  export interface Methods {
     onServerBoot(stateRef?: StateReference): any;
     onServerPrepared(state: State): any;
-    receiveTestData(data: DAT): any;
+    receiveTestData(data: AnyTestDataEvent): any;
   }
 }
 

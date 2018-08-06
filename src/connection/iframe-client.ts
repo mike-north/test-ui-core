@@ -10,7 +10,7 @@ namespace IFrameClientConnection {
     frame: HTMLIFrameElement;
     baseUrl: string;
   }
-  export interface Methods extends ClientConnection.Methods<any> {}
+  export interface Methods extends ClientConnection.Methods {}
 }
 
 class IFrameClientConnection extends ClientConnection {

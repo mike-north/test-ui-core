@@ -8,7 +8,7 @@ import BaseServer from '../src/base-server';
 import ClientConnection from '../src/connection/base-client';
 import ServerConnection from '../src/connection/base-server';
 import { State, StateReference } from '../src/state';
-import { TestDataEvent, TestModule } from '../src/types';
+import { AnyTestDataEvent, TestModule } from '../src/types';
 
 class TestClient extends BaseClient {
   async doPrepareServerFrame(
@@ -45,7 +45,7 @@ class ServerTestConnection extends ServerConnection {
   // tslint:disable-next-line:no-empty
   onServerPrepared(_state: State): any {}
   // tslint:disable-next-line:no-empty
-  receiveTestData(_data: TestDataEvent): any {}
+  receiveTestData(_data: AnyTestDataEvent): any {}
   prepare(_partialState: OptionalProps<State, 'id'>): State {
     this.clientConn.then(c => {
       setTimeout(() => {
@@ -77,7 +77,7 @@ class ServerTestConnection extends ServerConnection {
         return Promise.resolve(client.onServerPrepared(_state));
       },
       // tslint:disable-next-line:no-empty
-      receiveTestData(_data: TestDataEvent): any {
+      receiveTestData(_data: AnyTestDataEvent): any {
         const { client } = self;
         if (client === void 0) throw new Error('No client');
         return Promise.resolve(client.receiveTestData(_data));
@@ -99,7 +99,7 @@ class ClientTestConnection extends ClientConnection {
     this.client.onServerPrepared(_state);
   }
   // tslint:disable-next-line:no-empty
-  receiveTestData(_data: TestDataEvent): any {
+  receiveTestData(_data: AnyTestDataEvent): any {
 
   }
   protected async setupConnectionClient(

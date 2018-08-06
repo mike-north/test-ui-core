@@ -6,7 +6,7 @@ import BaseServer from '../src/base-server';
 import ConnectionClient from '../src/connection/base-client';
 import ConnectionServer from '../src/connection/base-server';
 import { State, StateReference } from '../src/state';
-import { TestDataEvent, TestModule } from '../src/types';
+import { AnyTestDataEvent, TestModule } from '../src/types';
 
 class TestServer extends BaseServer {
   calls: { [k: string]: any[] } = {};
@@ -36,7 +36,7 @@ class ServerTestConnection extends ConnectionServer {
       // tslint:disable-next-line:no-empty
       onServerPrepared(_state: State): any {},
       // tslint:disable-next-line:no-empty
-      receiveTestData(_data: TestDataEvent): any {}
+      receiveTestData(_data: AnyTestDataEvent): any {}
     };
   }
 }
