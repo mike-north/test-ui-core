@@ -5,3 +5,5 @@ tmp
 package-lock.json
 .DS_Store
 .vscode/settings.json
+.nyc_output
+coverage
