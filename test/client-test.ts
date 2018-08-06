@@ -6,23 +6,23 @@ import * as __sinon from 'sinon';
 import BaseClient from '../src/base-client';
 import ConnectionClient from '../src/connection/base-client';
 class TestClient extends BaseClient {
-  calls: { [k: string]: any[] } = {};
+  calls: { [k: string]: any[] | undefined } = {};
   get dataObservable() {
     return this.testData;
   }
-  protected async prepareServerFrameImpl(...args: any[]): Promise<any> {
-    this.calls.prepareServerFrameImpl
+  protected async prepareServerFrame(...args: any[]): Promise<any> {
+    this.calls.prepareServerFrameImpl !== void 0
       ? this.calls.prepareServerFrameImpl.push(args)
       : (this.calls.prepareServerFrameImpl = [args]);
   }
 }
 
 class TestConnectionClient extends ConnectionClient {
-  calls: { [k: string]: any[] } = {};
+  calls: { [k: string]: any[] | undefined } = {};
   protected async setupConnectionClient(
     ...args: any[]
   ): Promise<AsyncMethodReturns<ServerConnection.Methods>> {
-    this.calls.setupConnectionClient
+    this.calls.setupConnectionClient !== void 0
       ? this.calls.setupConnectionClient.push(args)
       : (this.calls.setupConnectionClient = [args]);
     const toReturn: AsyncMethodReturns<ServerConnection.Methods> = {

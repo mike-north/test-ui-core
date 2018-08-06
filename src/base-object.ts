@@ -20,7 +20,7 @@ export function optsWithDefaults<T extends {}>(
   provided?: Partial<T>
 ): T {
   const defaultsCopy = Object.assign({}, defaults);
-  if (!provided) return defaultsCopy;
+  if (provided === void 0) return defaultsCopy;
   return Object.assign(defaultsCopy, provided);
 }
 class BaseObject {

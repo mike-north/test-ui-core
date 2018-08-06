@@ -33,7 +33,7 @@ class IFrameClientConnection extends ClientConnection {
     const client = this;
     const methods: IFrameClientConnection.Methods = {
       async onServerBoot(stateRef?: StateReference) {
-        if (!stateRef) {
+        if (stateRef === void 0) {
           await tc.onServerBoot();
         } else {
           client.log.debug(

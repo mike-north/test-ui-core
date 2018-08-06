@@ -53,22 +53,22 @@ abstract class BaseClient extends BaseObject {
   async runModules(moduleFilter?: PredicateObject<TestModule>) {
     if (!this.enabled) return;
     this.log.bgYellow.blue.pushPrefix('runModules');
-    const state = await this.prepareServerFrame(moduleFilter);
+    const state = await this.doPrepareServerFrame(moduleFilter);
     this.log.debug('server frame prepared (id=' + state.id + ')');
     (await this.conn).runTests(state);
     this.log.popPrefix();
   }
-  protected async prepareServerFrame(
+  protected async doPrepareServerFrame(
     moduleFilter?: PredicateObject<TestModule>
   ): Promise<State> {
+    await this.prepareServerFrame(moduleFilter);
     const state = await (await this.conn).prepareServer({ data: moduleFilter });
     const d = (this.prepareWaiters[state.id] = new Deferred<void>());
     this.log.white.bgOrangeRed.debug('sessionId = ' + state.id);
-    await this.prepareServerFrameImpl(moduleFilter);
     await d.promise;
     return state;
   }
-  protected abstract async prepareServerFrameImpl(
+  protected abstract async prepareServerFrame(
     moduleFilter?: PredicateObject<TestModule>
   ): Promise<any>;
 }

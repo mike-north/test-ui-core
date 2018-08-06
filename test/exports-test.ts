@@ -13,8 +13,8 @@ export class ExportsTest {
     assert.deepEqual(
       Object.keys(Core),
       [
-        'TestClient',
-        'TestServer',
+        'Client',
+        'Server',
         'BaseObject',
         'IFrameConnectionClient',
         'IFrameConnectionServer'
@@ -25,13 +25,13 @@ export class ExportsTest {
   @test
   'TestClient export is correct'(assert: Assert) {
     assert.deepEqual(
-     Core.TestClient, TestClient
+     Core.Client, TestClient
     , 'has the correct value');
   }
   @test
   'TestServer export is correct'(assert: Assert) {
     assert.deepEqual(
-     Core.TestServer, TestServer
+     Core.Server, TestServer
     , 'has the correct value');
   }
   @test

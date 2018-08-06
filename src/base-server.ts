@@ -64,8 +64,8 @@ abstract class BaseServer extends BaseObject {
     });
     return state;
   }
-  runTests(moduleFilter?: PredicateObject<TestModule>) {
-    this.runTestsImpl(moduleFilter);
+  doRunTests(moduleFilter?: PredicateObject<TestModule>) {
+    this.runTests(moduleFilter);
   }
   /**
    * Boot the server
@@ -75,7 +75,7 @@ abstract class BaseServer extends BaseObject {
   protected abstract async prepareEnvironment(
     state: State
   ): Promise<{ ready: boolean }>;
-  protected abstract async runTestsImpl(
+  protected abstract async runTests(
     moduleFilter?: PredicateObject<TestModule>
   ): Promise<void>;
 

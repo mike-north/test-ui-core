@@ -23,7 +23,7 @@ class IFrameServerConnection extends ServerConnection {
         return ts.prepare(partialState);
       },
       runTests(state: State) {
-        return ts.runTests(state.data);
+        return ts.doRunTests(state.data);
       }
     };
     this.log.debug('connecting');
