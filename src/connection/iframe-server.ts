@@ -2,7 +2,7 @@ import { OptionalProps } from '@mike-north/types';
 import Penpal from 'penpal';
 import BaseServer from '../base-server';
 import { State } from '../state';
-import { TestDataEvent } from '../types';
+import { AnyTestDataEvent } from '../types';
 import ServerConnection from './base-server';
 
 // tslint:disable-next-line:no-namespace
@@ -36,7 +36,7 @@ class IFrameServerConnection extends ServerConnection {
     this.log.popPrefix();
     return client;
   }
-  async sendTestData(data: TestDataEvent) {
+  async sendTestData(data: AnyTestDataEvent) {
     await (await this.clientConn).receiveTestData(data);
   }
 }

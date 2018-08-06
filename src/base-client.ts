@@ -4,7 +4,7 @@ import { PredicateObject } from 'object-predicate';
 import BaseObject from './base-object';
 import ClientConnection from './connection/base-client';
 import { State } from './state';
-import { TestDataEvent, TestModule } from './types';
+import { AnyTestDataEvent, TestModule } from './types';
 
 // tslint:disable-next-line:no-namespace
 namespace BaseClient {
@@ -16,7 +16,7 @@ namespace BaseClient {
 
 abstract class BaseClient extends BaseObject {
   protected enabled: boolean;
-  protected testData = new Subject<TestDataEvent>();
+  protected testData = new Subject<AnyTestDataEvent>();
   protected conn: ClientConnection;
   private prepareWaiters: { [k: string]: Deferred<void> } = {};
   constructor(opts: BaseClient.Options) {
@@ -47,7 +47,7 @@ abstract class BaseClient extends BaseObject {
     }
     d.resolve();
   }
-  async receiveTestData(data: TestDataEvent) {
+  async receiveTestData(data: AnyTestDataEvent) {
     this.testData.next(data);
   }
   async runModules(moduleFilter?: PredicateObject<TestModule>) {

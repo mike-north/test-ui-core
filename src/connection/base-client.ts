@@ -11,13 +11,13 @@ import {
   StateId,
   StateReference
 } from '../state';
-import { TestDataEvent } from '../types';
+import { AnyTestDataEvent } from '../types';
 import ServerConnection from './base-server';
 
 // tslint:disable-next-line:no-namespace
 namespace ClientConnection {
   export interface Options extends BaseObject.Options {}
-  export interface Methods<DAT extends TestDataEvent = TestDataEvent> {
+  export interface Methods<DAT extends AnyTestDataEvent = AnyTestDataEvent> {
     onServerBoot(stateRef?: StateReference): any;
     onServerPrepared(state: State): any;
     receiveTestData(data: DAT): any;

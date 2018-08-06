@@ -1,4 +1,5 @@
 import { AsyncMethodReturns, Deferred, OptionalProps } from '@mike-north/types';
+import { AnyTestDataEvent } from '@test-ui/core/types';
 import BaseObject from '../base-object';
 import BaseServer from '../base-server';
 import { State, StateReference } from '../state';
@@ -43,7 +44,7 @@ abstract class ServerConnection extends BaseObject {
   async notifyIsPrepared(state: State) {
     return (await this.clientConn).onServerPrepared(state);
   }
-  abstract sendTestData(...args: any[]): any;
+  abstract sendTestData(data: AnyTestDataEvent): any;
   protected abstract async setupServerImpl(
     srv: BaseServer
   ): Promise<AsyncMethodReturns<ClientConnection.Methods>>;

@@ -2,7 +2,7 @@ import Penpal from 'penpal';
 import YouAreI from 'youarei';
 import BaseClient from '../base-client';
 import { State, StateReference } from '../state';
-import { TestDataEvent } from '../types';
+import { AnyTestDataEvent } from '../types';
 import ClientConnection from './base-client';
 // tslint:disable-next-line:no-namespace
 namespace IFrameClientConnection {
@@ -46,7 +46,7 @@ class IFrameClientConnection extends ClientConnection {
       async onServerPrepared(state: State) {
         await tc.onServerPrepared(state);
       },
-      async receiveTestData(data: TestDataEvent) {
+      async receiveTestData(data: AnyTestDataEvent) {
         await tc.receiveTestData(data);
       }
     };

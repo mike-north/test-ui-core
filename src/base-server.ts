@@ -7,7 +7,7 @@ import {
   createState
 } from './state';
 import {
-  TestDataEvent,
+  AnyTestDataEvent,
   TestModule
 } from './types';
 
@@ -79,7 +79,7 @@ abstract class BaseServer extends BaseObject {
     moduleFilter?: PredicateObject<TestModule>
   ): Promise<void>;
 
-  protected async sendTestData(data: TestDataEvent): Promise<void> {
+  protected async sendTestData(data: AnyTestDataEvent): Promise<void> {
     return await this.conn.sendTestData(data);
   }
 }
