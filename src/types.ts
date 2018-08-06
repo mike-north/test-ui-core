@@ -15,10 +15,10 @@ export interface TestStartTestDataEvent extends TestDataEvent<'testStart'> {
 export interface TestDoneTestDataEvent extends TestDataEvent<'testDone'> {
   name: string;
 }
-export interface ModuleDoneTestDataEvent extends TestDataEvent<'suiteStart'> {
+export interface SuiteDoneTestDataEvent extends TestDataEvent<'suiteStart'> {
   name: string;
 }
-export interface ModuleStartTestDataEvent extends TestDataEvent<'suiteDone'> {
+export interface SuiteStartTestDataEvent extends TestDataEvent<'suiteDone'> {
   name: string;
 }
 
@@ -27,12 +27,12 @@ export interface TestDataEventMap {
   done: DoneTestDataEvent;
   testStart: TestStartTestDataEvent;
   testDone: TestDoneTestDataEvent;
-  suiteStart: ModuleStartTestDataEvent;
-  suiteDone: ModuleDoneTestDataEvent;
+  suiteStart: SuiteStartTestDataEvent;
+  suiteDone: SuiteDoneTestDataEvent;
 }
 
 export type TestEventName = keyof TestDataEventMap;
 
 export type TestDataEventFor<K extends keyof TestDataEventMap> = TestDataEventMap[K];
 
-export type AnyTestDataEvent = TestDataEventFor<TestEventName>;
+export type AnyTestDataEvent = StartTestDataEvent | DoneTestDataEvent | TestStartTestDataEvent | TestDoneTestDataEvent | SuiteStartTestDataEvent | SuiteDoneTestDataEvent;
