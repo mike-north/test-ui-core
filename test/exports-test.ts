@@ -20,6 +20,7 @@ export class ExportsTest {
         'ConnectionServer',
         'ConnectionClient',
         'BaseObject',
+        'createState',
         'IFrameConnectionClient',
         'IFrameConnectionServer'
       ].sort(),
