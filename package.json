@@ -1,7 +1,7 @@
 {
   "name": "@test-ui/core",
   "version": "0.0.0-development",
-  "description": "Get in-app feedback from tests while developing",
+  "description": "A utility that facilitates controlling a remote software test suite",
   "main": "dist/commonjs/src/index.js",
   "module": "dist/modules/src/index.js",
   "types": "dist/types/src/index.d.ts",
