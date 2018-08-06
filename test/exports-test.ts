@@ -11,45 +11,45 @@ export class ExportsTest {
   @test
   'default exports are correct'(assert: Assert) {
     assert.deepEqual(
-      Object.keys(Core),
+      Object.keys(Core).sort(),
       [
         'Client',
         'Server',
+        'ConnectionServer',
+        'ConnectionClient',
         'BaseObject',
         'IFrameConnectionClient',
         'IFrameConnectionServer'
-      ],
+      ].sort(),
       'index.ts exports are correct'
     );
   }
   @test
   'TestClient export is correct'(assert: Assert) {
-    assert.deepEqual(
-     Core.Client, TestClient
-    , 'has the correct value');
+    assert.deepEqual(Core.Client, TestClient, 'has the correct value');
   }
   @test
   'TestServer export is correct'(assert: Assert) {
-    assert.deepEqual(
-     Core.Server, TestServer
-    , 'has the correct value');
+    assert.deepEqual(Core.Server, TestServer, 'has the correct value');
   }
   @test
   'BaseObject export is correct'(assert: Assert) {
-    assert.deepEqual(
-     Core.BaseObject, BaseObject
-    , 'has the correct value');
+    assert.deepEqual(Core.BaseObject, BaseObject, 'has the correct value');
   }
   @test
   'IFrameConnectionClient export is correct'(assert: Assert) {
     assert.deepEqual(
-     Core.IFrameConnectionClient, IFrameConnectionClient
-    , 'has the correct value');
+      Core.IFrameConnectionClient,
+      IFrameConnectionClient,
+      'has the correct value'
+    );
   }
   @test
   'IFrameConnectionServer export is correct'(assert: Assert) {
     assert.deepEqual(
-     Core.IFrameConnectionServer, IFrameConnectionServer
-    , 'has the correct value');
+      Core.IFrameConnectionServer,
+      IFrameConnectionServer,
+      'has the correct value'
+    );
   }
 }
