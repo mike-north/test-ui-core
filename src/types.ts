@@ -70,13 +70,13 @@ export interface TestDoneTestDataEvent extends TestDataEvent<'testDone'>, TestIn
 /**
  * Data that's emitted when a test suite is done running
  */
-export interface SuiteDoneTestDataEvent extends TestDataEvent<'suiteStart'>, SuiteInfo {
+export interface SuiteDoneTestDataEvent extends TestDataEvent<'suiteDone'>, SuiteInfo {
 
 }
 /**
  * Data that's emitted when a test suite is about to run
  */
-export interface SuiteStartTestDataEvent extends TestDataEvent<'suiteDone'> {
+export interface SuiteStartTestDataEvent extends TestDataEvent<'suiteStart'> {
   name: string;
   numTests: number;
 }
