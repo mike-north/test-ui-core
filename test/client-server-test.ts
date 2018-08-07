@@ -8,11 +8,11 @@ import BaseServer from '../src/base-server';
 import ClientConnection from '../src/connection/base-client';
 import ServerConnection from '../src/connection/base-server';
 import { State, StateReference } from '../src/state';
-import { AnyTestDataEvent, TestModule } from '../src/types';
+import { AnyTestDataEvent, SuiteInfo } from '../src/types';
 
 class TestClient extends BaseClient {
   async doPrepareServerFrame(
-    moduleFilter?: PredicateObject<TestModule>
+    moduleFilter?: PredicateObject<SuiteInfo>
   ): Promise<State> {
     return super.doPrepareServerFrame.call(this, moduleFilter);
   }
@@ -28,7 +28,7 @@ class TestServer extends BaseServer {
     throw new Error('Method not implemented.');
   }
   runTests(
-    _moduleFilter?: PredicateObject<TestModule> | undefined
+    _moduleFilter?: PredicateObject<SuiteInfo> | undefined
   ): Promise<void> {
     return Promise.resolve();
   }

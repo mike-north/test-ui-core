@@ -8,7 +8,7 @@ import {
 } from './state';
 import {
   AnyTestDataEvent,
-  TestModule
+  SuiteInfo
 } from './types';
 
 // tslint:disable-next-line:no-namespace
@@ -64,7 +64,7 @@ abstract class BaseServer extends BaseObject {
     });
     return state;
   }
-  doRunTests(moduleFilter?: PredicateObject<TestModule>) {
+  doRunTests(moduleFilter?: PredicateObject<SuiteInfo>) {
     this.runTests(moduleFilter);
   }
   /**
@@ -76,7 +76,7 @@ abstract class BaseServer extends BaseObject {
     state: State
   ): Promise<{ ready: boolean }>;
   protected abstract async runTests(
-    moduleFilter?: PredicateObject<TestModule>
+    moduleFilter?: PredicateObject<SuiteInfo>
   ): Promise<void>;
 
   protected async sendTestData(data: AnyTestDataEvent): Promise<void> {

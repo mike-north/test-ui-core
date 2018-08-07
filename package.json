@@ -44,7 +44,7 @@
     "bite-log": "^1.6.0",
     "json-typescript": "^1.0.1",
     "micro-observable": "^1.1.4",
-    "object-predicate": "^1.0.1",
+    "object-predicate": "^1.0.4",
     "penpal": "^3.0.3",
     "youarei": "^1.0.3"
   },

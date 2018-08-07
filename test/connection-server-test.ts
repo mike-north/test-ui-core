@@ -6,7 +6,7 @@ import BaseServer from '../src/base-server';
 import ConnectionClient from '../src/connection/base-client';
 import ConnectionServer from '../src/connection/base-server';
 import { State, StateReference } from '../src/state';
-import { AnyTestDataEvent, TestModule } from '../src/types';
+import { AnyTestDataEvent, SuiteInfo } from '../src/types';
 
 class TestServer extends BaseServer {
   calls: { [k: string]: any[] } = {};
@@ -17,7 +17,7 @@ class TestServer extends BaseServer {
     throw new Error('Method not implemented.');
   }
   protected runTests(
-    _moduleFilter?: PredicateObject<TestModule> | undefined
+    _moduleFilter?: PredicateObject<SuiteInfo> | undefined
   ): Promise<void> {
     throw new Error('Method not implemented.');
   }

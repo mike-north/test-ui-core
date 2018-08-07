@@ -4,7 +4,7 @@ import { PredicateObject } from 'object-predicate';
 import BaseObject from './base-object';
 import ClientConnection from './connection/base-client';
 import { State } from './state';
-import { AnyTestDataEvent, TestModule } from './types';
+import { AnyTestDataEvent, SuiteInfo } from './types';
 
 // tslint:disable-next-line:no-namespace
 namespace BaseClient {
@@ -50,7 +50,7 @@ abstract class BaseClient extends BaseObject {
   async receiveTestData(data: AnyTestDataEvent) {
     this.testData.next(data);
   }
-  async runModules(moduleFilter?: PredicateObject<TestModule>) {
+  async runModules(moduleFilter?: PredicateObject<SuiteInfo>) {
     if (!this.enabled) return;
     this.log.bgYellow.blue.pushPrefix('runModules');
     const state = await this.doPrepareServerFrame(moduleFilter);
@@ -59,7 +59,7 @@ abstract class BaseClient extends BaseObject {
     this.log.popPrefix();
   }
   protected async doPrepareServerFrame(
-    moduleFilter?: PredicateObject<TestModule>
+    moduleFilter?: PredicateObject<SuiteInfo>
   ): Promise<State> {
     await this.prepareServerFrame(moduleFilter);
     const state = await (await this.conn).prepareServer({ data: moduleFilter });
@@ -69,7 +69,7 @@ abstract class BaseClient extends BaseObject {
     return state;
   }
   protected abstract async prepareServerFrame(
-    moduleFilter?: PredicateObject<TestModule>
+    moduleFilter?: PredicateObject<SuiteInfo>
   ): Promise<any>;
 }
 

@@ -1,5 +1,5 @@
 import { PredicateObject } from 'object-predicate';
-import { TestModule } from './types';
+import { SuiteInfo } from './types';
 
 function generateId(): string {
   return Math.round(Math.random() * 1e9).toString(36);
@@ -14,11 +14,11 @@ export interface StateReference {
 /**
  * Some serializable state that can be passed from client-to-server
  */
-export interface State<T = PredicateObject<TestModule>> extends StateReference {
+export interface State<T = PredicateObject<SuiteInfo>> extends StateReference {
   data?: T;
 }
 
-export function createState<T = PredicateObject<TestModule>>(
+export function createState<T = PredicateObject<SuiteInfo>>(
   data?: T
 ): State<T> {
   return {
