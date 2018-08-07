@@ -1,84 +1,100 @@
-export interface SuiteInfo {
-  parentId?: string;
+// Basic Information
+export interface EntityInfo {
   id: string;
   name: string;
 }
-
-export interface TestInfo {
-  id: string;
-  name: string;
+export interface RunInfo {
+  id?: string;
+  suites: SuiteInfo[];
+}
+export interface SuiteInfo extends EntityInfo {
+  parentId?: string;
+  tests: TestInfo[];
+}
+export interface TestInfo extends EntityInfo {
   suiteId: string;
 }
-export interface TestRunData extends TestInfo {
-  isSkipped: boolean;
-  duration: number;
+// Shared types that keep consistency between TestRun state and Events
+export interface TestRunData extends TestInfo, SingleResultStats {
   error?: string;
 }
-export interface SuiteRunData extends SuiteInfo {
+export interface SuiteRunData extends SuiteInfo, GroupResultStats {}
+
+export interface SingleResultStats {
+  isPassed: boolean;
   isSkipped: boolean;
   duration: number;
-  numTestsPassed: number;
-  numTestsFailed: number;
+}
+export interface GroupResultStats extends SingleResultStats {
+  numPassed: number;
+  numFailed: number;
+}
+// Modeling TestRun State
+
+export interface RunReport extends GroupResultStats {
+  suites: SuiteReport[];
+}
+
+export interface SuiteReport extends SuiteRunData {
+  childSuites?: SuiteReport[];
+  tests: TestReport[];
+}
+
+export interface TestReport extends TestRunData {
+  assertions: AssertionReport[];
 }
 
 export interface AssertionReport {
   message: string;
-  passed: boolean;
-}
-export interface TestReport extends TestRunData {
-  assertions: AssertionReport[];
-}
-export interface SuiteReport extends SuiteRunData {
-  suites: SuiteReport[];
-  tests: TestReport[];
-}
-export interface RunReport {
-  suites: SuiteReport[];
+  isPassed: boolean;
 }
 
+// Events
 export interface TestDataEvent<K extends TestEventName> {
   event: K;
-  report: RunReport;
 }
 /**
  * Data that's emitted when the test run starts
  */
-export interface StartTestDataEvent extends TestDataEvent<'start'> {}
+export interface StartTestDataEvent extends TestDataEvent<'start'> {
+  info: RunInfo;
+}
 
 /**
  * Data that's emitted when the test run finishes
  */
 export interface DoneTestDataEvent extends TestDataEvent<'done'> {
-  numTestsPassed: number;
-  numTestsFailed: number;
+  info: RunInfo;
+  report: RunReport;
 }
 
 /**
  * Data that's emitted when an individual test is about to run
  */
 export interface TestStartTestDataEvent extends TestDataEvent<'testStart'> {
-  name: string;
-  moduleId: string;
+  info: TestInfo;
 }
 
 /**
  * Data that's emitted when an individual test done running
  */
-export interface TestDoneTestDataEvent extends TestDataEvent<'testDone'>, TestInfo {
+export interface TestDoneTestDataEvent extends TestDataEvent<'testDone'> {
+  report: TestReport;
+  info: TestInfo;
   error?: string;
 }
 /**
  * Data that's emitted when a test suite is done running
  */
-export interface SuiteDoneTestDataEvent extends TestDataEvent<'suiteDone'>, SuiteInfo {
-
+export interface SuiteDoneTestDataEvent extends TestDataEvent<'suiteDone'> {
+  report: SuiteReport;
+  info: SuiteInfo;
 }
 /**
  * Data that's emitted when a test suite is about to run
  */
 export interface SuiteStartTestDataEvent extends TestDataEvent<'suiteStart'> {
-  name: string;
-  numTests: number;
+  info: SuiteInfo;
 }
 
 export interface TestDataEventMap {
