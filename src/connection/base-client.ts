@@ -59,7 +59,7 @@ abstract class ClientConnection extends BaseObject {
     return result;
   }
 
-  async prepareServer(partialState: OptionalProps<State, 'id'>) {
+  async prepareServer(partialState: OptionalProps<State, 'id'>): Promise<State> {
     this.log.debug('telling server to prepareServer');
     const state = await (await this.serverConn).prepare(partialState);
     this.prepareStateCache[state.id] = state as any;
