@@ -7,3 +7,4 @@ export { State, StateId, StateReference } from './state';
 export { default as IFrameConnectionClient } from './connection/iframe-client';
 export { default as IFrameConnectionServer } from './connection/iframe-server';
 export * from './types';
+export { default as JSReporters } from './js-reporters';

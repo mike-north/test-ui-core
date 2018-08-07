@@ -1,82 +1,109 @@
-import { AssertionReport, DoneTestDataEvent, RunReport, StartTestDataEvent, SuiteDoneTestDataEvent, SuiteInfo, SuiteReport, SuiteStartTestDataEvent, TestDoneTestDataEvent, TestInfo, TestReport, TestStartTestDataEvent } from './types';
+import JSReporters from './js-reporters';
+import { RunEndEvent, RunStartEvent, SuiteEndEvent, SuiteInfo, SuiteStartEvent, TestEndEvent, TestInfo, TestStartEvent } from './types';
 
 const testInfo: TestInfo = {
   id: '002',
   name: 'A test',
-  suiteId: '001'
+  fullName: ['A test'],
+  suiteName: '001'
 };
 const suiteInfo: SuiteInfo = {
   id: '001',
   name: 'A suite',
-  tests: [testInfo]
-};
-
-const assertReport: AssertionReport = {
-  message: 'The value was ok',
-  isPassed: true
-};
-
-const testReport: TestReport = {
-  id: 'My first test',
-  name: 'My first test',
-  assertions: [assertReport],
-  isPassed: true,
-  isSkipped: false,
-  suiteId: '001',
-  duration: 0
-};
-
-const suiteReport: SuiteReport = {
-  id: 'My first suite',
-  name: 'My first suite',
-  tests: [testReport],
-  isPassed: true,
-  isSkipped: false,
-  duration: 0,
-  numPassed: 0,
-  numFailed: 0
-};
-
-const runReport: RunReport = {
-  suites: [suiteReport],
-  numFailed: 0,
-  numPassed: 1,
-  isPassed: true,
-  isSkipped: false,
-  duration: 1
-};
-
-const startEvt: StartTestDataEvent = {
-  event: 'start',
-  info: {
-    suites: [suiteInfo]
+  fullName: ['A suite'],
+  tests: [testInfo],
+  testCounts: {
+    total: 3
   }
 };
-const doneEvt: DoneTestDataEvent = {
-  event: 'done',
-  info: {
-    suites: [suiteInfo]
+
+const assertReport: JSReporters.Assertion<number> = {
+  message: 'The value was ok',
+  passed: true,
+  todo: false,
+  actual: 124,
+  expected: 124
+};
+const assertReport2: JSReporters.Assertion<string> = {
+  message: 'The value was ok',
+  passed: false,
+  todo: false,
+  actual: '123',
+  expected: '124'
+};
+
+const testStart: JSReporters.TestStart = {
+  name: 'test2',
+  suiteName: 'suite2',
+  fullName: ['suite1', 'suite2', 'test2']
+};
+
+const testEnd: JSReporters.TestEnd = {
+  name: 'test2',
+  suiteName: 'suite2',
+  fullName: ['suite1', 'suite2', 'test2'],
+  status: `passed`,
+  runtime: 1,
+  errors: [],
+  assertions: [{
+    passed: true,
+    todo: false,
+    actual: true,
+    expected: true,
+    message: `some message`,
+    stack: undefined
+  }]
+};
+
+const suiteEnd: JSReporters.SuiteEnd = {
+  name: 'suite1',
+  fullName: ['suite1'],
+  tests: [testInfo],
+  childSuites: [],
+  status: `failed`,
+  testCounts: {
+    todo: 0,
+    passed: 1,
+    failed: 1,
+    skipped: 0,
+    total: 2
   },
-  report: runReport
+  runtime: 3
 };
-const suiteStartEvt: SuiteStartTestDataEvent = {
+const suiteStart: JSReporters.SuiteStart = {
+  name: 'suite2',
+  fullName: ['suite1', 'suite2'],
+  tests: [testInfo],
+  childSuites: [],
+  testCounts: {
+    total: 1
+  }
+};
+
+const suiteStartEvt: SuiteStartEvent = {
   event: 'suiteStart',
-  info: suiteInfo
+  data: suiteStart
 };
-const suiteDoneEvt: SuiteDoneTestDataEvent = {
-  event: 'suiteDone',
-  info: suiteInfo,
-  report: suiteReport
+const suiteDoneEvt: SuiteEndEvent = {
+  event: 'suiteEnd',
+  data: suiteEnd
 };
-const testStartEvt: TestStartTestDataEvent = {
+const startEvt: RunStartEvent = {
+  event: 'runStart',
+  data: suiteStart
+};
+const doneEvt: RunEndEvent = {
+  event: 'runEnd',
+  data: suiteEnd
+};
+const testStartEvt: TestStartEvent = {
   event: 'testStart',
-  info: testInfo
+  data: testStart
 };
-const testDoneEvt: TestDoneTestDataEvent = {
-  event: 'testDone',
-  info: testInfo,
-  report: testReport
+const testDoneEvt: TestEndEvent = {
+  event: 'testEnd',
+  data: testEnd
 };
 
 // tslint:disable-next-line:no-unused-expression
-[startEvt, doneEvt, suiteStartEvt, suiteDoneEvt, testStartEvt, testDoneEvt];
+[startEvt, doneEvt, suiteStartEvt, suiteDoneEvt, testStart, testEnd, assertReport, assertReport2, testStart, testEnd, testStartEvt, testDoneEvt, suiteInfo];
