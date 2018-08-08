@@ -87,4 +87,4 @@ export type AnyTestDataEvent =
   | SuiteEndEvent;
 
 export type Predicate<T> = (s: T) => boolean | PredicateObject<Partial<T>>;
-export type SuitePredicate = Predicate<SuiteInfo>;
+export type SuitePredicate = Predicate<Partial<SuiteInfo>>;
