@@ -1,14 +1,14 @@
 import { Deferred } from '@mike-north/types';
 import { Subject } from 'micro-observable';
 import BaseObject from './base-object';
-import ClientConnection from './connection/base-client';
+import ConnectionClient from './connection/base-client';
 import { State } from './state';
 import { AnyTestDataEvent, SuitePredicate } from './types';
 
 // tslint:disable-next-line:no-namespace
 namespace BaseClient {
   export interface Options extends BaseObject.Options {
-    connection: ClientConnection;
+    connection: ConnectionClient;
     enabled?: boolean;
   }
 }
@@ -16,7 +16,7 @@ namespace BaseClient {
 abstract class BaseClient extends BaseObject {
   protected enabled: boolean;
   protected testData = new Subject<AnyTestDataEvent>();
-  protected conn: ClientConnection;
+  protected conn: ConnectionClient;
   private prepareWaiters: { [k: string]: Deferred<void> } = {};
   constructor(opts: BaseClient.Options) {
     super(opts);
@@ -31,7 +31,7 @@ abstract class BaseClient extends BaseObject {
     });
   }
   // tslint:disable-next-line:no-empty
-  async setupConnection(_conn: ClientConnection) {}
+  async setupConnection(_conn: ConnectionClient) {}
   // tslint:disable-next-line:no-empty
   async onServerBoot() {}
   // tslint:disable-next-line:no-empty

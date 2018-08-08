@@ -12,10 +12,10 @@ import {
   StateReference
 } from '../state';
 import { AnyTestDataEvent } from '../types';
-import ServerConnection from './base-server';
+import ConnectionServer from './base-server';
 
 // tslint:disable-next-line:no-namespace
-namespace ClientConnection {
+namespace ConnectionClient {
   export interface Options extends BaseObject.Options {}
   export interface Methods {
     onServerBoot(stateRef?: StateReference): any;
@@ -31,24 +31,24 @@ export type StateCache = { [K in StateId]: RequiredProps<State, 'id' | 'data'> }
  * is usually the recipient of testing data, wheres the "server"
  * is where the tests are being run.
  */
-abstract class ClientConnection extends BaseObject {
+abstract class ConnectionClient extends BaseObject {
   protected get serverConn(): PromiseLike<
-    AsyncMethodReturns<ServerConnection.Methods>
+    AsyncMethodReturns<ConnectionServer.Methods>
   > {
     return this.setupWork.promise;
   }
   protected prepareStateCache: StateCache = {};
   private setupWork = new Deferred<
-    AsyncMethodReturns<ServerConnection.Methods>
+    AsyncMethodReturns<ConnectionServer.Methods>
   >();
-  constructor(opts?: ClientConnection.Options) {
+  constructor(opts?: ConnectionClient.Options) {
     super(opts);
     this.log.bgPaleGreen.pushPrefix('🔌Cl');
   }
 
   async setupClient(
     tc: BaseClient
-  ): Promise<AsyncMethodReturns<ServerConnection.Methods>> {
+  ): Promise<AsyncMethodReturns<ConnectionServer.Methods>> {
     this.log.pushPrefix('setupClient').debug('begin');
     await tc.setupConnection(this);
     let result = await this.setupConnectionClient(tc);
@@ -71,6 +71,6 @@ abstract class ClientConnection extends BaseObject {
   }
   protected abstract async setupConnectionClient(
     tc: BaseClient
-  ): Promise<AsyncMethodReturns<ServerConnection.Methods>>;
+  ): Promise<AsyncMethodReturns<ConnectionServer.Methods>>;
 }
-export default ClientConnection;
+export default ConnectionClient;

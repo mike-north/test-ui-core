@@ -3,17 +3,17 @@ import YouAreI from 'youarei';
 import BaseClient from '../base-client';
 import { State, StateReference } from '../state';
 import { AnyTestDataEvent } from '../types';
-import ClientConnection from './base-client';
+import ConnectionClient from './base-client';
 // tslint:disable-next-line:no-namespace
-namespace IFrameClientConnection {
-  export interface Options extends ClientConnection.Options {
+namespace IFrameConnectionClient {
+  export interface Options extends ConnectionClient.Options {
     frame: HTMLIFrameElement;
     baseUrl: string;
   }
-  export interface Methods extends ClientConnection.Methods {}
+  export interface Methods extends ConnectionClient.Methods {}
 }
 
-class IFrameClientConnection extends ClientConnection {
+class IFrameConnectionClient extends ConnectionClient {
   private get frameUrl(): string {
     const uri = new YouAreI(this.baseUrl);
     uri.query_merge(this.queryParams);
@@ -22,7 +22,7 @@ class IFrameClientConnection extends ClientConnection {
   queryParams: { [k: string]: any } = {};
   private frame: HTMLIFrameElement;
   private baseUrl: string;
-  constructor(options: IFrameClientConnection.Options) {
+  constructor(options: IFrameConnectionClient.Options) {
     super(options);
     this.log.darkGray.pushPrefix('IFrame');
     this.frame = options.frame;
@@ -31,7 +31,7 @@ class IFrameClientConnection extends ClientConnection {
   async setupConnectionClient(tc: BaseClient) {
     this.log.pushPrefix('setup');
     const client = this;
-    const methods: IFrameClientConnection.Methods = {
+    const methods: IFrameConnectionClient.Methods = {
       async onServerBoot(stateRef?: StateReference) {
         if (stateRef === void 0) {
           await tc.onServerBoot();
@@ -64,4 +64,4 @@ class IFrameClientConnection extends ClientConnection {
   }
 }
 
-export default IFrameClientConnection;
+export default IFrameConnectionClient;

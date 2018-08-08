@@ -3,7 +3,7 @@ import BaseObject from '../base-object';
 import BaseServer from '../base-server';
 import { State, StateReference } from '../state';
 import { AnyTestDataEvent } from '../types';
-import ClientConnection from './base-client';
+import ConnectionClient from './base-client';
 
 // tslint:disable-next-line:no-namespace
 namespace ServerConnection {
@@ -16,12 +16,12 @@ namespace ServerConnection {
 
 abstract class ServerConnection extends BaseObject {
   protected get clientConn(): PromiseLike<
-    AsyncMethodReturns<ClientConnection.Methods>
+    AsyncMethodReturns<ConnectionClient.Methods>
   > {
     return this.setupWork.promise;
   }
   private setupWork = new Deferred<
-    AsyncMethodReturns<ClientConnection.Methods>
+    AsyncMethodReturns<ConnectionClient.Methods>
   >();
   constructor(opts?: ServerConnection.Options) {
     super(opts);
@@ -29,7 +29,7 @@ abstract class ServerConnection extends BaseObject {
   }
   async setupServer(
     srv: BaseServer
-  ): Promise<AsyncMethodReturns<ClientConnection.Methods>> {
+  ): Promise<AsyncMethodReturns<ConnectionClient.Methods>> {
     this.log.pushPrefix('setupServer').debug('begin');
     await srv.setupConnection(this);
     let result = await this.setupServerImpl(srv);
@@ -47,7 +47,7 @@ abstract class ServerConnection extends BaseObject {
   abstract sendTestData(data: AnyTestDataEvent): any;
   protected abstract async setupServerImpl(
     srv: BaseServer
-  ): Promise<AsyncMethodReturns<ClientConnection.Methods>>;
+  ): Promise<AsyncMethodReturns<ConnectionClient.Methods>>;
 }
 
 export default ServerConnection;

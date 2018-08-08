@@ -4,8 +4,8 @@ import { suite, test } from 'qunit-decorators';
 import * as __sinon from 'sinon';
 import BaseClient from '../src/base-client';
 import BaseServer from '../src/base-server';
-import ClientConnection from '../src/connection/base-client';
-import ServerConnection from '../src/connection/base-server';
+import ConnectionClient from '../src/connection/base-client';
+import ConnectionServer from '../src/connection/base-server';
 import { State, StateReference } from '../src/state';
 import { AnyTestDataEvent, SuitePredicate } from '../src/types';
 
@@ -29,8 +29,8 @@ class TestServer extends BaseServer {
   }
 }
 
-class ServerTestConnection extends ServerConnection {
-  client?: ClientTestConnection;
+class ServerTestConnection extends ConnectionServer {
+  client?: TestConnectionClient;
   server?: TestServer;
   calls: { [k: string]: any[] } = {};
   // tslint:disable-next-line:no-empty
@@ -55,7 +55,7 @@ class ServerTestConnection extends ServerConnection {
   }
   protected async setupServerImpl(
     _srv: BaseServer
-  ): Promise<AsyncMethodReturns<ClientConnection.Methods>> {
+  ): Promise<AsyncMethodReturns<ConnectionClient.Methods>> {
     this.server = _srv as any;
     const self = this;
     return {
@@ -81,7 +81,7 @@ class ServerTestConnection extends ServerConnection {
   }
 }
 
-class ClientTestConnection extends ClientConnection {
+class TestConnectionClient extends ConnectionClient {
   srv?: ServerTestConnection;
   client?: TestClient;
   // tslint:disable-next-line:no-empty
@@ -95,7 +95,7 @@ class ClientTestConnection extends ClientConnection {
   receiveTestData(_data: AnyTestDataEvent): any {}
   protected async setupConnectionClient(
     tc: TestClient
-  ): Promise<AsyncMethodReturns<ServerConnection.Methods>> {
+  ): Promise<AsyncMethodReturns<ConnectionServer.Methods>> {
     this.client = tc;
     const self = this;
     return {
@@ -124,7 +124,7 @@ export class ClientServerTests {
   }
   @test
   async 'Client-Server communication happens in correct order'(assert: Assert) {
-    const cConn = new ClientTestConnection({ logLevel: Level.debug });
+    const cConn = new TestConnectionClient({ logLevel: Level.debug });
     const originalSetupClient = cConn.setupClient;
     this.sinon.stub(cConn, 'setupClient').callsFake(tc => {
       assert.step('cConnSetupClientStub');

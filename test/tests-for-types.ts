@@ -1,3 +1,5 @@
+import BaseClient from './base-client';
+import { IFrameConnectionClient } from './index';
 import JSReporters from './js-reporters';
 import {
   RunEndEvent,
@@ -116,6 +118,21 @@ const testDoneEvt: TestEndEvent = {
   data: testEnd
 };
 
+const clientOpts: BaseClient.Options = {
+  enabled: true,
+  connection: new IFrameConnectionClient({
+    frame: window.document.createElement('iframe'),
+    baseUrl: '/tests'
+  })
+};
+
+const clientOpts2: BaseClient.Options = {
+  connection: new IFrameConnectionClient({
+    frame: window.document.createElement('iframe'),
+    baseUrl: '/tests'
+  })
+};
+
 // tslint:disable-next-line:no-unused-expression
 [
   startEvt,
@@ -130,5 +147,7 @@ const testDoneEvt: TestEndEvent = {
   testEnd,
   testStartEvt,
   testDoneEvt,
-  suiteInfo
+  suiteInfo,
+  clientOpts,
+  clientOpts2
 ];

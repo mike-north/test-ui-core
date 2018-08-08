@@ -6,19 +6,19 @@ import { AnyTestDataEvent } from '../types';
 import ServerConnection from './base-server';
 
 // tslint:disable-next-line:no-namespace
-namespace IFrameServerConnection {
+namespace IFrameConnectionServer {
   export interface Options extends ServerConnection.Options {}
   export interface Methods extends ServerConnection.Methods {}
 }
 
-class IFrameServerConnection extends ServerConnection {
-  constructor(options?: IFrameServerConnection.Options) {
+class IFrameConnectionServer extends ServerConnection {
+  constructor(options?: IFrameConnectionServer.Options) {
     super(options);
     this.log.darkGray.pushPrefix('IFrame');
   }
   async setupServerImpl(ts: BaseServer) {
     this.log.pushPrefix('setup');
-    const methods: IFrameServerConnection.Methods = {
+    const methods: IFrameConnectionServer.Methods = {
       prepare(partialState: OptionalProps<State, 'id'>): State {
         return ts.prepare(partialState);
       },
@@ -41,4 +41,4 @@ class IFrameServerConnection extends ServerConnection {
   }
 }
 
-export default IFrameServerConnection;
+export default IFrameConnectionServer;
