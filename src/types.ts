@@ -1,3 +1,4 @@
+import { PredicateObject } from 'object-predicate';
 import JSReporters from './js-reporters';
 
 // Basic Information
@@ -85,4 +86,5 @@ export type AnyTestDataEvent =
   | SuiteStartEvent
   | SuiteEndEvent;
 
-export type SuitePredicate = (s: SuiteInfo) => boolean;
+export type Predicate<T> = (s: T) => boolean | PredicateObject<Partial<T>>;
+export type SuitePredicate = Predicate<SuiteInfo>;
