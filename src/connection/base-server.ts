@@ -1,8 +1,8 @@
 import { AsyncMethodReturns, Deferred, OptionalProps } from '@mike-north/types';
-import { AnyTestDataEvent } from '@test-ui/core/types';
 import BaseObject from '../base-object';
 import BaseServer from '../base-server';
 import { State, StateReference } from '../state';
+import { AnyTestDataEvent } from '../types';
 import ClientConnection from './base-client';
 
 // tslint:disable-next-line:no-namespace
