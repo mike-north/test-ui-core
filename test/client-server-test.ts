@@ -1,6 +1,5 @@
 import { AsyncMethodReturns, OptionalProps } from '@mike-north/types';
 import { Level } from 'bite-log';
-import { PredicateObject } from 'object-predicate';
 import { suite, test } from 'qunit-decorators';
 import * as __sinon from 'sinon';
 import BaseClient from '../src/base-client';
@@ -8,12 +7,10 @@ import BaseServer from '../src/base-server';
 import ClientConnection from '../src/connection/base-client';
 import ServerConnection from '../src/connection/base-server';
 import { State, StateReference } from '../src/state';
-import { AnyTestDataEvent, SuiteInfo } from '../src/types';
+import { AnyTestDataEvent, SuitePredicate } from '../src/types';
 
 class TestClient extends BaseClient {
-  async doPrepareServerFrame(
-    moduleFilter?: PredicateObject<SuiteInfo>
-  ): Promise<State> {
+  async doPrepareServerFrame(moduleFilter?: SuitePredicate): Promise<State> {
     return super.doPrepareServerFrame.call(this, moduleFilter);
   }
   // tslint:disable-next-line:no-empty
@@ -27,9 +24,7 @@ class TestServer extends BaseServer {
   prepareEnvironment(_state: State): Promise<{ ready: boolean }> {
     throw new Error('Method not implemented.');
   }
-  runTests(
-    _moduleFilter?: PredicateObject<SuiteInfo> | undefined
-  ): Promise<void> {
+  runTests(_moduleFilter?: SuitePredicate): Promise<void> {
     return Promise.resolve();
   }
 }
@@ -52,7 +47,7 @@ class ServerTestConnection extends ServerConnection {
         c.onServerPrepared({ id: 'aaa' });
       }, 100);
     });
-    return { id: 'aaa'};
+    return { id: 'aaa' };
   }
   runTests(_state: State) {
     if (typeof this.server === 'undefined') throw new Error('No server');
@@ -90,18 +85,14 @@ class ClientTestConnection extends ClientConnection {
   srv?: ServerTestConnection;
   client?: TestClient;
   // tslint:disable-next-line:no-empty
-  onServerBoot(_stateRef?: StateReference): any {
-
-  }
+  onServerBoot(_stateRef?: StateReference): any {}
   // tslint:disable-next-line:no-empty
   onServerPrepared(_state: State): any {
     if (this.client === void 0) throw new Error('no client');
     this.client.onServerPrepared(_state);
   }
   // tslint:disable-next-line:no-empty
-  receiveTestData(_data: AnyTestDataEvent): any {
-
-  }
+  receiveTestData(_data: AnyTestDataEvent): any {}
   protected async setupConnectionClient(
     tc: TestClient
   ): Promise<AsyncMethodReturns<ServerConnection.Methods>> {
@@ -135,22 +126,18 @@ export class ClientServerTests {
   async 'Client-Server communication happens in correct order'(assert: Assert) {
     const cConn = new ClientTestConnection({ logLevel: Level.debug });
     const originalSetupClient = cConn.setupClient;
-    this.sinon
-      .stub(cConn, 'setupClient')
-      .callsFake(tc => {
-        assert.step('cConnSetupClientStub');
-        return originalSetupClient.call(cConn, tc);
-      });
+    this.sinon.stub(cConn, 'setupClient').callsFake(tc => {
+      assert.step('cConnSetupClientStub');
+      return originalSetupClient.call(cConn, tc);
+    });
     const sConn = new ServerTestConnection({ logLevel: Level.debug });
     sConn.client = cConn;
     cConn.srv = sConn;
     const originalSetupServer = sConn.setupServer;
-    this.sinon
-      .stub(sConn, 'setupServer')
-      .callsFake(ts => {
-        assert.step('sConnSetupServerStub');
-        return originalSetupServer.call(sConn, ts);
-      });
+    this.sinon.stub(sConn, 'setupServer').callsFake(ts => {
+      assert.step('sConnSetupServerStub');
+      return originalSetupServer.call(sConn, ts);
+    });
     const client = new TestClient({
       logLevel: Level.debug,
       connection: cConn
@@ -206,12 +193,20 @@ export class ClientServerTests {
     ]);
     await server.start();
 
-    assert.verifySteps(['serverStart', 'serverBoot',
-    'sConnNotifyIsBooted', 'cConnOnServerBoot']);
+    assert.verifySteps([
+      'serverStart',
+      'serverBoot',
+      'sConnNotifyIsBooted',
+      'cConnOnServerBoot'
+    ]);
 
-    const runModulesPromise = client.runModules({ name: 'purple' });
+    const runModulesPromise = client.runModules(m => m.name === 'purple');
     await runModulesPromise;
     await new Promise(r => setTimeout(r, 300));
-    assert.verifySteps(['clientDoPrepareServerFrame', 'clientPrepareServerFrame', 'serverRunTests']);
+    assert.verifySteps([
+      'clientDoPrepareServerFrame',
+      'clientPrepareServerFrame',
+      'serverRunTests'
+    ]);
   }
 }

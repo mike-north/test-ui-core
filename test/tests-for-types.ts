@@ -1,5 +1,14 @@
 import JSReporters from './js-reporters';
-import { RunEndEvent, RunStartEvent, SuiteEndEvent, SuiteInfo, SuiteStartEvent, TestEndEvent, TestInfo, TestStartEvent } from './types';
+import {
+  RunEndEvent,
+  RunStartEvent,
+  SuiteEndEvent,
+  SuiteInfo,
+  SuiteStartEvent,
+  TestEndEvent,
+  TestInfo,
+  TestStartEvent
+} from './types';
 
 const testInfo: TestInfo = {
   id: '002',
@@ -45,14 +54,16 @@ const testEnd: JSReporters.TestEnd = {
   status: `passed`,
   runtime: 1,
   errors: [],
-  assertions: [{
-    passed: true,
-    todo: false,
-    actual: true,
-    expected: true,
-    message: `some message`,
-    stack: undefined
-  }]
+  assertions: [
+    {
+      passed: true,
+      todo: false,
+      actual: true,
+      expected: true,
+      message: `some message`,
+      stack: undefined
+    }
+  ]
 };
 
 const suiteEnd: JSReporters.SuiteEnd = {
@@ -106,4 +117,18 @@ const testDoneEvt: TestEndEvent = {
 };
 
 // tslint:disable-next-line:no-unused-expression
-[startEvt, doneEvt, suiteStartEvt, suiteDoneEvt, testStart, testEnd, assertReport, assertReport2, testStart, testEnd, testStartEvt, testDoneEvt, suiteInfo];
+[
+  startEvt,
+  doneEvt,
+  suiteStartEvt,
+  suiteDoneEvt,
+  testStart,
+  testEnd,
+  assertReport,
+  assertReport2,
+  testStart,
+  testEnd,
+  testStartEvt,
+  testDoneEvt,
+  suiteInfo
+];

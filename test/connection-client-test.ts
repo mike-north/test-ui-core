@@ -5,6 +5,7 @@ import { suite, test } from 'qunit-decorators';
 import * as __sinon from 'sinon';
 import BaseClient from '../src/base-client';
 import ConnectionClient from '../src/connection/base-client';
+
 class TestClient extends BaseClient {
   calls: { [k: string]: any[] } = {};
   protected async prepareServerFrame(...args: any[]): Promise<any> {
@@ -56,15 +57,29 @@ export class ConnectionClientTests {
   ) {
     const connection = new TestConnectionClient();
     assert.ok(connection, 'Connection exists');
-    const setupClientSpy = connection.setupClient = this.sinon.spy(connection.setupClient);
-    assert.equal(connection.calls.setupConnection, undefined, 'before passing connection into client, setupConnection has not yet been called');
+    const setupClientSpy = (connection.setupClient = this.sinon.spy(
+      connection.setupClient
+    ));
+    assert.equal(
+      connection.calls.setupConnection,
+      undefined,
+      'before passing connection into client, setupConnection has not yet been called'
+    );
     const client = new TestClient({
       connection
     });
     assert.ok(client, 'Client exists');
     assert.ok(setupClientSpy.calledOnce, 'setupClient was called once');
-    assert.equal(setupClientSpy.args[0].length, 1, 'setupClient received one arg');
-    assert.deepEqual(setupClientSpy.args[0][0], client, 'setupClient was was passed the client instance');
+    assert.equal(
+      setupClientSpy.args[0].length,
+      1,
+      'setupClient received one arg'
+    );
+    assert.deepEqual(
+      setupClientSpy.args[0][0],
+      client,
+      'setupClient was was passed the client instance'
+    );
   }
 
   @test
@@ -83,7 +98,11 @@ export class ConnectionClientTests {
     assert.ok(client);
     assert.ok(s.calledOnce, 'setupConnection was called once');
     assert.equal(s.args[0].length, 1, 'setupConnection received one arg');
-    assert.deepEqual(s.args[0][0], connection, 'setupConnection was was passed the connection instance');
+    assert.deepEqual(
+      s.args[0][0],
+      connection,
+      'setupConnection was was passed the connection instance'
+    );
   }
 
   @test
@@ -103,17 +122,25 @@ export class ConnectionClientTests {
       connection
     });
     assert.ok(client);
-    const runTestsPromise = connection.runTests({ id: 'abc'});
+    const runTestsPromise = connection.runTests({ id: 'abc' });
     let resolveCount = 0;
     runTestsPromise.then(x => {
       resolveCount++;
       return x;
     });
     await new Promise(res => setTimeout(res, 10)); // wait 100ms
-    assert.equal(resolveCount, 0, 'While setupConnection work remains unresolved, runTests waits');
+    assert.equal(
+      resolveCount,
+      0,
+      'While setupConnection work remains unresolved, runTests waits'
+    );
     d.resolve();
     await new Promise(res => setTimeout(res, 10)); // wait 100ms
-    assert.equal(resolveCount, 1, 'Once setupConnection work is resolved, runTests resumes');
+    assert.equal(
+      resolveCount,
+      1,
+      'Once setupConnection work is resolved, runTests resumes'
+    );
   }
 
   @test
@@ -133,17 +160,26 @@ export class ConnectionClientTests {
       connection
     });
     assert.ok(client);
-    const prepareServerPromise = connection.prepareServer({ data: { name: 'foo' }});
+    const prepareServerPromise = connection.prepareServer({
+      data: m => m.name === 'foo'
+    });
     let resolveCount = 0;
     prepareServerPromise.then(x => {
       resolveCount++;
       return x;
     });
     await new Promise(res => setTimeout(res, 10)); // wait 100ms
-    assert.equal(resolveCount, 0, 'While setupConnection work remains unresolved, prepareServer waits');
+    assert.equal(
+      resolveCount,
+      0,
+      'While setupConnection work remains unresolved, prepareServer waits'
+    );
     d.resolve();
     await new Promise(res => setTimeout(res, 10)); // wait 100ms
-    assert.equal(resolveCount, 1, 'Once setupConnection work is resolved, prepareServer resumes');
+    assert.equal(
+      resolveCount,
+      1,
+      'Once setupConnection work is resolved, prepareServer resumes'
+    );
   }
-
 }

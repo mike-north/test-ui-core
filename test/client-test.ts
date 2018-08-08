@@ -5,6 +5,7 @@ import { suite, test } from 'qunit-decorators';
 import * as __sinon from 'sinon';
 import BaseClient from '../src/base-client';
 import ConnectionClient from '../src/connection/base-client';
+
 class TestClient extends BaseClient {
   calls: { [k: string]: any[] | undefined } = {};
   get dataObservable() {

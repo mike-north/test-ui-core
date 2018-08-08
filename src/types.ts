@@ -84,3 +84,5 @@ export type AnyTestDataEvent =
   | TestEndEvent
   | SuiteStartEvent
   | SuiteEndEvent;
+
+export type SuitePredicate = (s: SuiteInfo) => boolean;

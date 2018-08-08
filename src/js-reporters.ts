@@ -1,15 +1,16 @@
-
 // tslint:disable-next-line:no-namespace
 namespace JSReporters {
-  export type EventNames = 'runStart' | 'runEnd' | 'suiteStart' | 'suiteEnd' | 'testStart' | 'testEnd';
+  export type EventNames =
+    | 'runStart'
+    | 'runEnd'
+    | 'suiteStart'
+    | 'suiteEnd'
+    | 'testStart'
+    | 'testEnd';
   export type Status = 'failed' | 'skipped' | 'todo' | 'passed';
 
-  export interface Suite {
-
-  }
-  export interface Test {
-
-  }
+  export interface Suite {}
+  export interface Test {}
 
   export interface Assertion<T = any> {
     passed: boolean;

@@ -1,12 +1,11 @@
 import { AsyncMethodReturns, Deferred } from '@mike-north/types';
-import { PredicateObject } from 'object-predicate';
 import { suite, test } from 'qunit-decorators';
 import * as __sinon from 'sinon';
 import BaseServer from '../src/base-server';
 import ConnectionClient from '../src/connection/base-client';
 import ConnectionServer from '../src/connection/base-server';
 import { State, StateReference } from '../src/state';
-import { AnyTestDataEvent, SuiteInfo } from '../src/types';
+import { AnyTestDataEvent, SuitePredicate } from '../src/types';
 
 class TestServer extends BaseServer {
   calls: { [k: string]: any[] } = {};
@@ -17,7 +16,7 @@ class TestServer extends BaseServer {
     throw new Error('Method not implemented.');
   }
   protected runTests(
-    _moduleFilter?: PredicateObject<SuiteInfo> | undefined
+    _moduleFilter?: SuitePredicate
   ): Promise<void> {
     throw new Error('Method not implemented.');
   }
@@ -63,15 +62,29 @@ export class ConnectionServerTests {
   ) {
     const connection = new ServerTestConnection();
     assert.ok(connection, 'Connection exists');
-    const setupServerSpy = connection.setupServer = this.sinon.spy(connection.setupServer);
-    assert.equal(connection.calls.setupConnection, undefined, 'before passing connection into server, setupConnection has not yet been called');
+    const setupServerSpy = (connection.setupServer = this.sinon.spy(
+      connection.setupServer
+    ));
+    assert.equal(
+      connection.calls.setupConnection,
+      undefined,
+      'before passing connection into server, setupConnection has not yet been called'
+    );
     const server = new TestServer({
       connection
     });
     assert.ok(server, 'Server exists');
     assert.ok(setupServerSpy.calledOnce, 'setupServer was called once');
-    assert.equal(setupServerSpy.args[0].length, 1, 'setupServer received one arg');
-    assert.deepEqual(setupServerSpy.args[0][0], server, 'setupServer was was passed the server instance');
+    assert.equal(
+      setupServerSpy.args[0].length,
+      1,
+      'setupServer received one arg'
+    );
+    assert.deepEqual(
+      setupServerSpy.args[0][0],
+      server,
+      'setupServer was was passed the server instance'
+    );
   }
 
   @test
@@ -90,7 +103,11 @@ export class ConnectionServerTests {
     assert.ok(server);
     assert.ok(s.calledOnce, 'setupConnection was called once');
     assert.equal(s.args[0].length, 1, 'setupConnection received one arg');
-    assert.deepEqual(s.args[0][0], connection, 'setupConnection was was passed the connection instance');
+    assert.deepEqual(
+      s.args[0][0],
+      connection,
+      'setupConnection was was passed the connection instance'
+    );
   }
 
   @test
@@ -110,17 +127,25 @@ export class ConnectionServerTests {
       connection
     });
     assert.ok(server);
-    const notifyIsBootedPromise = connection.notifyIsBooted({ id: 'abc'});
+    const notifyIsBootedPromise = connection.notifyIsBooted({ id: 'abc' });
     let resolveCount = 0;
     notifyIsBootedPromise.then(x => {
       resolveCount++;
       return x;
     });
     await new Promise(res => setTimeout(res, 10)); // wait 100ms
-    assert.equal(resolveCount, 0, 'While setupConnection work remains unresolved, notifyIsBooted waits');
+    assert.equal(
+      resolveCount,
+      0,
+      'While setupConnection work remains unresolved, notifyIsBooted waits'
+    );
     d.resolve();
     await new Promise(res => setTimeout(res, 10)); // wait 100ms
-    assert.equal(resolveCount, 1, 'Once setupConnection work is resolved, notifyIsBooted resumes');
+    assert.equal(
+      resolveCount,
+      1,
+      'Once setupConnection work is resolved, notifyIsBooted resumes'
+    );
   }
 
   @test
@@ -140,17 +165,24 @@ export class ConnectionServerTests {
       connection
     });
     assert.ok(server);
-    const notifyIsPreparedPromise = connection.notifyIsPrepared({ id: 'abc'});
+    const notifyIsPreparedPromise = connection.notifyIsPrepared({ id: 'abc' });
     let resolveCount = 0;
     notifyIsPreparedPromise.then(x => {
       resolveCount++;
       return x;
     });
     await new Promise(res => setTimeout(res, 10)); // wait 100ms
-    assert.equal(resolveCount, 0, 'While setupConnection work remains unresolved, notifyIsPrepared waits');
+    assert.equal(
+      resolveCount,
+      0,
+      'While setupConnection work remains unresolved, notifyIsPrepared waits'
+    );
     d.resolve();
     await new Promise(res => setTimeout(res, 10)); // wait 100ms
-    assert.equal(resolveCount, 1, 'Once setupConnection work is resolved, notifyIsPrepared resumes');
+    assert.equal(
+      resolveCount,
+      1,
+      'Once setupConnection work is resolved, notifyIsPrepared resumes'
+    );
   }
-
 }

@@ -1,5 +1,4 @@
 import { OptionalProps } from '@mike-north/types';
-import { PredicateObject } from 'object-predicate';
 import BaseObject from './base-object';
 import ServerConnection from './connection/base-server';
 import {
@@ -8,7 +7,7 @@ import {
 } from './state';
 import {
   AnyTestDataEvent,
-  SuiteInfo
+  SuitePredicate
 } from './types';
 
 // tslint:disable-next-line:no-namespace
@@ -64,7 +63,7 @@ abstract class BaseServer extends BaseObject {
     });
     return state;
   }
-  doRunTests(moduleFilter?: PredicateObject<SuiteInfo>) {
+  doRunTests(moduleFilter?: SuitePredicate) {
     this.runTests(moduleFilter);
   }
   /**
@@ -76,7 +75,7 @@ abstract class BaseServer extends BaseObject {
     state: State
   ): Promise<{ ready: boolean }>;
   protected abstract async runTests(
-    moduleFilter?: PredicateObject<SuiteInfo>
+    moduleFilter?: SuitePredicate
   ): Promise<void>;
 
   protected async sendTestData(data: AnyTestDataEvent): Promise<void> {
