@@ -1,5 +1,5 @@
 import { Deferred } from '@mike-north/types';
-import { Subject } from 'micro-observable';
+import { Observable, Subject } from 'micro-observable';
 import BaseObject from './base-object';
 import ConnectionClient from './connection/base-client';
 import { State } from './state';
@@ -16,6 +16,9 @@ namespace BaseClient {
 abstract class BaseClient extends BaseObject {
   protected enabled: boolean;
   protected testData = new Subject<AnyTestDataEvent>();
+  get data(): Observable<AnyTestDataEvent> {
+    return this.testData;
+  }
   protected conn: ConnectionClient;
   private prepareWaiters: { [k: string]: Deferred<void> } = {};
   constructor(opts: BaseClient.Options) {
