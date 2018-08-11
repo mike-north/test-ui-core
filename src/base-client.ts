@@ -28,6 +28,8 @@ abstract class BaseClient extends BaseObject {
     this.conn = opts.connection;
     if (this.enabled) {
       this.conn.setupClient(this);
+    } else {
+      this.log.log('Disabled...Shutting down.');
     }
     this.cleanupOnDestroy.push(() => {
       this.testData.complete();
