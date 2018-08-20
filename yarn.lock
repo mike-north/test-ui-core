@@ -7982,8 +7982,8 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
 typescript@^3.1.0-dev.20180804:
-  version "3.1.0-dev.20180808"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.0-dev.20180808.tgz#c74081db8c79788df9be4d99277571f9c11d49d1"
+  version "3.1.0-dev.20180818"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.0-dev.20180818.tgz#9bcc3e3fcc7d96ffbf4b3099d00b5c8a69da2e61"
 
 typescript@~2.8.3:
   version "2.8.4"
