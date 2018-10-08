@@ -5450,8 +5450,8 @@ methods@~1.1.2:
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
 
 micro-observable@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/micro-observable/-/micro-observable-1.1.4.tgz#57929503abb193f556a0d27edcc912dbd3d8ca54"
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/micro-observable/-/micro-observable-1.2.1.tgz#a6716169523e8c867365444d05027c4918334c7e"
 
 micromatch@^3.0.4, micromatch@^3.1.10, micromatch@^3.1.4:
   version "3.1.10"
