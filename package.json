@@ -51,7 +51,7 @@
     "json-typescript": "^1.0.1",
     "micro-observable": "^1.1.4",
     "object-predicate": "^1.0.4",
-    "penpal": "^3.0.3",
+    "penpal": "^6.0.0",
     "youarei": "^1.0.3"
   },
   "plublishConfig": {
